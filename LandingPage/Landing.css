@@ -1,0 +1,32 @@
+.landing-container {
+  display: flex;
+  width: 75vw;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin: auto;
+}
+.landing-content {
+  font-weight: 300;
+  margin-right: 4rem;
+}
+
+.landing-content h1 {
+  font-family: "Poppins", sans-serif;
+  font-size: 4em;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.1rem;
+  text-align: right;
+}
+
+.landing-content p {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.5em;
+  letter-spacing: 0.1rem;
+  text-align: right;
+  line-height: 1.9rem;
+}
+
+.landing-image {
+  max-width: 50%;
+  padding-top: 5%;
+}
