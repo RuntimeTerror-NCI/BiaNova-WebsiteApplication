@@ -1,0 +1,54 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.banner-container {
+  margin: 5rem auto;
+  background-color: white;
+}
+
+.top-container {
+  margin: auto;
+  text-align: center;
+  width: 60%;
+}
+
+.bottom-container {
+  display: flex;
+  margin: 1rem 0;
+  justify-content: center;
+}
+
+.top-container-paragraph {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+.badge-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 30vh;
+  margin: 0 1rem;
+}
+
+.badge-icon {
+  width: 5rem;
+  height: 5rem;
+}
+.badge-header {
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.badge-text {
+  text-align: center;
+  width: 80%;
+}
+
+.badge-paragraph {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}

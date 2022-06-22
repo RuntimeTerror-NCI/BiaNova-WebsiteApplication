@@ -1,0 +1,37 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.searchbar {
+  display: flex;
+  justify-content: center;
+  margin: 2rem;
+}
+
+input {
+  width: 60%;
+  height: 3rem;
+}
+
+.search-btn {
+  background-color: transparent;
+  transition: background 0.3s;
+  border: 0 transparent;
+  margin-left: -4.4rem;
+  width: 4rem;
+}
+
+button:hover {
+  background: #0b7dda;
+}

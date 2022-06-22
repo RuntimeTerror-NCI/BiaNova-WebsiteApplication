@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./index.css";
+import Header from "./components/Header/Header.js";
+import Landing from "./LandingPage/Landing.js";
+import BadgeBanner from "./components/BadgeBanner/BadgeBanner";
+import SearchSection from "./components/SearchSection/SearchSection";
+import Footer from "./components/Footer/Footer";
+import CardCon from "./components/CardCon/CardCon.js";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div>
+        <Header />
+        <Landing />
+      </div>
+      <BadgeBanner />
+      <SearchSection />
+
+      <div className="card-containers">
+        <CardCon />
+        <CardCon />
+        <CardCon />
+      </div>
+      <Footer />
     </div>
   );
 }
