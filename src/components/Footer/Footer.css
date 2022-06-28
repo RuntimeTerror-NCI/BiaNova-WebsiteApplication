@@ -1,5 +1,22 @@
 .footer-container {
-  background-color: aliceblue;
-  display: flex;
-  justify-content: center;
+	background-color: aliceblue;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	font-size: 0.7rem;
+	padding: 1rem 0;
+}
+
+.footer-content-header {
+	margin-bottom: 0.5rem;
+}
+
+.footer-content-header a {
+	text-decoration: none;
+	color: rgb(80, 80, 80);
+	transition: color 0.2s ease-in-out;
+}
+
+.footer-content-header a:hover {
+	color: black;
 }
