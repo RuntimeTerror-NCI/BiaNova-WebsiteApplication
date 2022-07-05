@@ -1,14 +1,14 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+
+const StyledForm = styled.form`
+  display: flex;
+  padding: 3rem 8rem 4rem;
+  flex-direction: column;
+  align-items: flex-end;
+`;
 
 function Form({ ...props }) {
-	const Form = styled.form`
-		display: flex;
-		padding: 3rem 8rem 4rem;
-		flex-direction: column;
-		align-items: flex-end;
-	`;
-
-	return <Form>{props.children}</Form>;
+  return <StyledForm>{props.children}</StyledForm>;
 }
 
 export default Form;
