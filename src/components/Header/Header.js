@@ -1,30 +1,26 @@
-import logo from "../../assets/imgs/bold.png";
+import styled from 'styled-components';
 
-import "./Header.css";
+import HeaderBrand from './HeaderBrand';
+import HeaderLinks from './HeaderLinks';
+import BurgerMenu from './BurgerMenu';
 
-function Header({ ...props }) {
-  return (
-    <div className="Header">
-      <div className="header-brand">
-        <img className="header-logo" alt="logo" src={logo} />
+const HeaderStyled = styled.div`
+	display: flex;
+	align-content: space-between;
+	justify-content: space-between;
+	align-items: center;
+	width: 80vw;
+	margin: 1.4rem auto;
+`;
 
-        <h1 className="header-h1"> BiaNova </h1>
-      </div>
-      <div className="login">
-        <p>
-          <button onClick={() => props.showLogin()} className="header-btn">
-            {" "}
-            Log In{" "}
-          </button>{" "}
-          |{" "}
-          <button onClick={() => props.showSignup()} className="header-btn">
-            {" "}
-            Sign Up{" "}
-          </button>
-        </p>
-      </div>
-    </div>
-  );
+function Header() {
+	return (
+		<HeaderStyled>
+			<HeaderBrand />
+			<BurgerMenu />
+			<HeaderLinks />
+		</HeaderStyled>
+	);
 }
 
 export default Header;
