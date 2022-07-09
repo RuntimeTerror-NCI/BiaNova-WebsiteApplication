@@ -8,8 +8,8 @@ function App() {
 	return (
 		<div>
 			<Header />
-			{/* <HomePage /> */}
-			<RecipeSearch />
+			<HomePage />
+			{/* <RecipeSearch /> */}
 			<Footer />
 		</div>
 	);

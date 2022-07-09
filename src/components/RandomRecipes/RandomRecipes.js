@@ -1,8 +1,5 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+require('dotenv').config()
 import styled from 'styled-components';
-
 import Card from '../Card/Card';
 
 const RandomRecipe = styled.div`
@@ -10,62 +7,59 @@ const RandomRecipe = styled.div`
 	justify-content: center;
 	margin: 2rem;
 `;
-const axios = require('axios');
+// const axios = require('axios');
 
-const options = {
-	method: 'GET',
-	url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random',
-	params: { tags: 'vegetarian,dessert', number: '3' },
-	headers: {
-		'X-RapidAPI-Key': '2ad55f65fbmshcfe0e39bda9c68bp12a597jsn89ff591ad860',
-		'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
-	},
-};
+// const options = {
+// 	method: 'GET',
+// 	url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?apiKey${process.env.REACT_APP_FOOD_API_KEY}&number=3',
+// 	headers: {
+// 		'X-RapidAPI-Key': '2ad55f65fbmshcfe0e39bda9c68bp12a597jsn89ff591ad860',
+// 		'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
+// 	},
+// };
 
-axios
-	.request(options)
-	.then(response => {
-		console.log(response.data);
-		// setRecipe(response.data);
-	})
-	.catch(function (error) {
-		console.error(error);
-	});
+// let recipe = {
+// 	image: '',
+// 	title: '',
+// 	content: '',
+// };
+
+// axios
+// 	.request(options)
+// 	.then(random => {
+// 		console.log(random.data);
+// 		recipe.image = random.data.recipes[0].image;
+// 		recipe.title = random.data.recipes[0].title;
+// 		recipe.content = random.data.recipes[0].summary;
+// 	})
+// 	.catch(function (error) {
+// 		console.error(error);
+// 	});
 
 function RandomRecipes() {
-	// const [recipeData, setRecipe] = useState(null);
+	
+		const [random, setRandom] = useState([]);
+	  
+		const getRandomRecipes = async () => {
+		  const getData = localStorage.getItem("popular");
+	  
+		  if (getData) {
+			setRandom(JSON.parse(getData));
+		  } else {
+			const resp = await fetch(
+			  `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_FOOD_API_KEY}&number=3`
+			);
+			const data = await resp.json();
+			setRandom(data.recipes);
+			localStorage.setItem("popular", JSON.stringify(data.recipes));
+			console.log(data.recipes);
+		  }
+		
 
-	// useEffect(() => {
-	// 	axios
-	// 		.request(options)
-	// 		.then(response => {
-	// 			console.log(response.data);
-	// 			setRecipe(response.data);
-	// 		})
-	// 		.catch(function (error) {
-	// 			console.error(error);
-	// 		});
-
-	// 	return () => {
-	// 		console.log(recipeData);
-	// 	};
-	// });
-
-	// const getRecipeFetch = async () => {
-	// 	return await axios.request(recipeUrl).then(response => {
-	// 		setRecipe(response.data);
-	// 	});
-	// };
-
-	// useEffect(() => {
-
-	// }, []); //passes in blank array so renders once
 
 	return (
 		<RandomRecipe className='card-containers'>
-			<Card />
-			<Card />
-			<Card />
+			<Card title={recipe.title} img={recipe.image} content={recipe.content} />
 		</RandomRecipe>
 	);
 }
