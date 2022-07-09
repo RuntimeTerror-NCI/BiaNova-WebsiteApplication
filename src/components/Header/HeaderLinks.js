@@ -39,11 +39,11 @@ function HeaderLinks() {
 	return (
 		<Links>
 			<LinksWrapper>
-				<Button onClick={() => setShowLogin(true)}> Log In </Button> |{' '}
-				<Button onClick={() => setShowSignup(true)}> Sign Up </Button>
+				<Button onClick={() => setShowLogin(prev => !prev)}> Log In </Button> |{' '}
+				<Button onClick={() => setShowSignup(prev => !prev)}> Sign Up </Button>
 			</LinksWrapper>
-			<Login open={showLogin} close={() => setShowLogin(false)} />
-			<Signup open={showSignup} close={() => setShowSignup(false)} />
+			<Login open={showLogin} close={() => setShowLogin(prev => !prev)} />
+			<Signup open={showSignup} close={() => setShowSignup(prev => !prev)} />
 		</Links>
 	);
 }

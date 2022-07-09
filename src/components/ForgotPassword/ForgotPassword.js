@@ -50,7 +50,8 @@ const Button = styled.button`
 	}
 `;
 
-function ForgotPassword({ close }) {
+function ForgotPassword({ open, close }) {
+	if (!open) return null;
 	return (
 		<Modal>
 			<Button onClick={close}>&#x2715;</Button>

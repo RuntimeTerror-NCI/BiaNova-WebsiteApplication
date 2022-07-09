@@ -44,7 +44,7 @@ function BadgeContainer() {
 	return (
 		<BadgeContainerStyled>
 			{badges.map(badge => (
-				<Badge image={badge.image} heading={badge.heading} text={badge.text} />
+				<Badge key={badge.id} image={badge.image} heading={badge.heading} text={badge.text} />
 			))}
 		</BadgeContainerStyled>
 	);

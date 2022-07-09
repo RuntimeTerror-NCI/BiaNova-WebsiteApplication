@@ -1,8 +1,10 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
+import ForgotPassword from '../ForgotPassword/ForgotPassword';
 import Modal from '../Modal/Modal';
 import Form from '../../UI/Form';
 import { LinkButton, PillButton } from '../../UI/Button.styles';
+import { useState } from 'react';
 
 const InputContainer = styled.div`
 	padding: 0.8rem 0;
@@ -42,8 +44,8 @@ const Button = styled.button`
 `;
 
 function Login({ open, close }) {
+	const [forgotpass, setForgotPass] = useState(false);
 	if (!open) return null;
-
 	return (
 		<Modal>
 			<Button onClick={close}>&#x2715;</Button>
@@ -61,8 +63,12 @@ function Login({ open, close }) {
 				<PillButton type='submit'>Log In</PillButton>
 			</Form>
 			<div>
-				<LinkButton> Forgot your Password? </LinkButton>
+				<LinkButton onClick={() => setForgotPass(prev => !prev)}>
+					{' '}
+					Forgot your Password?{' '}
+				</LinkButton>
 			</div>
+			<ForgotPassword open={forgotpass} close={() => setForgotPass(prev => !prev)} />
 		</Modal>
 	);
 }
