@@ -1,246 +1,161 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const InputContainer = styled.div`
-	padding: 0.8rem 0;
-	display: flex;
-	gap: 1rem;
-	align-items: center;
+  padding: 0.8rem 0;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 `;
 
 const LabelHead = styled.label`
-	font-weight: 2rem;
-	font-size: 1.5rem;
-	padding-bottom: 6px;
+  font-weight: 2rem;
+  font-size: 1.5rem;
+  padding-bottom: 6px;
 `;
 
 const Input = styled.input`
-	height: 30px;
-	width: 50px;
+  height: 30px;
+  width: 50px;
+  padding: 0.5rem;
 `;
 
-const Checkbox = styled.input``;
+const Checkbox = styled.input`
+  cursor: pointer;
+  width: 1rem;
+  height: 1rem;
+`;
 
 const StyledForm = styled.form`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 1rem;
-	background-color: white;
-	width: 90%;
-	margin: auto;
-	padding: 2rem 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  background-color: white;
+  width: 90%;
+  margin: auto;
+  padding: 2rem 4rem;
 `;
 
 const CheckboxContainer = styled.div`
-	display: flex;
-	gap: 2rem;
+  display: flex;
+  gap: 2rem;
 `;
 
 const InputGroup = styled.div`
-	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
-	gap: 50px 60px;
-	justify-content: center;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 50px 60px;
+  justify-content: center;
 `;
 
 const CheckboxItem = styled.div`
-	display: flex;
-	height: 2rem;
-	align-items: center;
+  display: flex;
+  height: 2rem;
+  align-items: center;
 `;
 
 const CheckboxGroup = styled.div`
-	display: flex;
-	flex-direction: column;
-	padding: 5px;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
 `;
 
 const CheckboxLabel = styled.label`
-	padding-left: 15px;
+  padding-left: 15px;
+  width: 8rem;
 `;
 
 const InputLabel = styled.label`
-	width: 5rem;
+  width: 5rem;
 `;
 
 const RecipeFilterStyled = styled.div`
-	margin-top: 2rem;
+  margin-top: 2rem;
 `;
 
-function RecipeFilter({ open, close }) {
-	if (!open) return null;
-	return (
-		<RecipeFilterStyled>
-			<StyledForm>
-				<CheckboxContainer>
-					<CheckboxGroup>
-						<LabelHead> Intolerances </LabelHead>
+const RadioButton = styled.input`
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+`;
 
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>Dairy</CheckboxLabel>
-						</CheckboxItem>
+function RecipeFilter({ open, params }) {
+  const [value, setValue] = useState("ketogenic");
+  const [strictChecked, setStrictChecked] = useState(false);
+  if (!open) return null;
 
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>Gluten</CheckboxLabel>
-						</CheckboxItem>
+  function toCapitalCase(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>Peanut</CheckboxLabel>
-						</CheckboxItem>
+  // function handleChecked(e) {
+  //   let isChecked = e.target.checked; //checking if checked
+  //   setStrictChecked(isChecked);
+  //   console.log(isChecked);
+  // }
 
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>Sesame</CheckboxLabel>
-						</CheckboxItem>
+  function handleClick(event) {
+    if (event.target.value === value) {
+      setValue("");
+    } else {
+      setValue(event.target.value);
+    }
+  }
 
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>Seafood</CheckboxLabel>
-						</CheckboxItem>
+  //   const checkValue = e.target.value; //getting value
 
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>Shellfish</CheckboxLabel>
-						</CheckboxItem>
+  return (
+    <RecipeFilterStyled>
+      <StyledForm>
+        <CheckboxContainer>
+          <CheckboxGroup>
+            <LabelHead> Intolerances </LabelHead>
+            {params.intolerances.map((intolerance, i) => (
+              <CheckboxItem key={i}>
+                <Checkbox name="${intolerance}" type="checkbox" />
+                <CheckboxLabel htmlFor="${intolerance}">
+                  {toCapitalCase(intolerance)}
+                </CheckboxLabel>
+              </CheckboxItem>
+            ))}
+          </CheckboxGroup>
 
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>Nuts</CheckboxLabel>
-						</CheckboxItem>
+          <CheckboxGroup>
+            {" "}
+            <LabelHead> Diets </LabelHead>
+            {Object.values(params.diets).map((diet, i) => (
+              <CheckboxItem key={i}>
+                <RadioButton
+                  onClick={handleClick}
+                  name="${diet}"
+                  type="radio"
+                  value={value}
+                />
+                <CheckboxLabel htmlFor="${diet}">
+                  {toCapitalCase(diet)}
+                </CheckboxLabel>
+              </CheckboxItem>
+            ))}
+          </CheckboxGroup>
+        </CheckboxContainer>
 
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>Wheat</CheckboxLabel>
-						</CheckboxItem>
-					</CheckboxGroup>
-
-					<CheckboxGroup>
-						<LabelHead> Diets </LabelHead>
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>GlutenFree</CheckboxLabel>
-						</CheckboxItem>
-
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>Ketogenic </CheckboxLabel>
-						</CheckboxItem>
-
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>Vegetarian </CheckboxLabel>
-						</CheckboxItem>
-
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>LactoVegetarian </CheckboxLabel>
-						</CheckboxItem>
-
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>OvoVegetarian </CheckboxLabel>
-						</CheckboxItem>
-
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>Vegan</CheckboxLabel>
-						</CheckboxItem>
-
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>Pescatarian</CheckboxLabel>
-						</CheckboxItem>
-
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>Paleo</CheckboxLabel>
-						</CheckboxItem>
-
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>Primal</CheckboxLabel>
-						</CheckboxItem>
-
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>LowFODMAP</CheckboxLabel>
-						</CheckboxItem>
-
-						<CheckboxItem>
-							<Checkbox type='checkbox' />
-							<CheckboxLabel>Whole30 </CheckboxLabel>
-						</CheckboxItem>
-					</CheckboxGroup>
-				</CheckboxContainer>
-
-				<InputGroup>
-					<InputContainer>
-						<InputLabel for='minCal'> Min Calories </InputLabel>
-						<Input type='number' name='minCal' />
-					</InputContainer>
-
-					<InputContainer>
-						<InputLabel for='maxCal'> Max Calories </InputLabel>
-						<Input type='number' name='maxCal' />
-					</InputContainer>
-
-					<InputContainer>
-						<InputLabel for='minCarbs'> Min Carbs </InputLabel>
-						<Input type='number' name='minCarbs' />
-					</InputContainer>
-
-					<InputContainer>
-						<InputLabel for='maxCarbs'> Max Carbs </InputLabel>
-						<Input type='number' name='maxCarbs' />
-					</InputContainer>
-
-					<InputContainer>
-						<InputLabel for='minProtein'> Min Protein </InputLabel>
-						<Input type='number' name='minProtein' />
-					</InputContainer>
-
-					<InputContainer>
-						<InputLabel for='maxProtein'> Max Protein </InputLabel>
-						<Input type='number' name='maxProtein' />
-					</InputContainer>
-
-					<InputContainer>
-						<InputLabel for='minSugar'> Min Sugar </InputLabel>
-						<Input type='number' name='minSugar' />
-					</InputContainer>
-
-					<InputContainer>
-						<InputLabel for='maxSugar'> Max Sugar </InputLabel>
-						<Input type='number' name='maxSugar' />
-					</InputContainer>
-
-					<InputContainer>
-						<InputLabel for='minSodium'> Min Sodium </InputLabel>
-						<Input type='number' name='minSodium' />
-					</InputContainer>
-
-					<InputContainer>
-						<InputLabel for='maxSodium'> Max Sodium </InputLabel>
-						<Input type='number' name='maxSodium' />
-					</InputContainer>
-
-					<InputContainer>
-						<InputLabel for='minSatFat'> Min Saturated Fat </InputLabel>
-						<Input type='number' name='minSatFat' />
-					</InputContainer>
-
-					<InputContainer>
-						<InputLabel for='maxSatFat'> Max Saturated Fat</InputLabel>
-						<Input type='number' name='maxSatFat' />
-					</InputContainer>
-				</InputGroup>
-			</StyledForm>
-		</RecipeFilterStyled>
-	);
+        <InputGroup>
+          {Object.keys(params.nutrition).map((nutrition, i) => (
+            <InputContainer key={i}>
+              <Input type="number" name="${nutrition}" />
+              <InputLabel htmlFor="${nutrition}">
+                {" "}
+                {toCapitalCase(nutrition)}
+              </InputLabel>
+            </InputContainer>
+          ))}
+        </InputGroup>
+      </StyledForm>
+    </RecipeFilterStyled>
+  );
 }
 
 export default RecipeFilter;
