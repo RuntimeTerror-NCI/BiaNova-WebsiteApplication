@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 const InputContainer = styled.div`
 	padding: 0.8rem 0;
@@ -81,10 +81,42 @@ const RadioButton = styled.input`
 	cursor: pointer;
 `;
 
-function RecipeFilter({ params }) {
+function RecipeFilter({ open, params }) {
+	const [filterParams, setFilterParams] = useState({
+		intolerances: [],
+		diet: '',
+		nutrition: [],
+	});
+
+	const [nutrition, setNutrition] = useState([]);
+
+	const [intolerances, setIntolerances] = useState([{ name: '', isChecked: false }]);
+
+	function handleCheckboxSelection(e) {
+		let capture = e.target.checked;
+		let value = e.target.checked.value;
+		console.log(capture, value);
+	}
+
+	function handleNutrition(e, i) {
+		let newNutrition = [...nutrition];
+		let capture = e.target.value;
+		let text = e.currentTarget.name.toString();
+
+		if (capture > 0) {
+			if (newNutrition.includes(`&${text}`)) {
+				console.log('found' + newNutrition);
+			}
+			newNutrition.push(`&${text}=${capture}`);
+		}
+		setNutrition(newNutrition);
+	}
+
 	function toCapitalCase(string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
+
+	if (!open) return null;
 
 	return (
 		<RecipeFilterStyled>
@@ -94,8 +126,15 @@ function RecipeFilter({ params }) {
 						<LabelHead> Intolerances </LabelHead>
 						{params.intolerances.map((intolerance, i) => (
 							<CheckboxItem key={i}>
-								<Checkbox name='${intolerance}' type='checkbox' />
-								<CheckboxLabel htmlFor='${intolerance}'>{toCapitalCase(intolerance)}</CheckboxLabel>
+								<Checkbox
+									name={`${intolerance}`}
+									type='checkbox'
+									onChange={e => handleCheckboxSelection(e)}
+									value='${intolerance}'
+								/>
+								<CheckboxLabel htmlFor={`${intolerance}`}>
+									{toCapitalCase(intolerance)}
+								</CheckboxLabel>
 							</CheckboxItem>
 						))}
 					</CheckboxGroup>
@@ -105,12 +144,7 @@ function RecipeFilter({ params }) {
 						<LabelHead> Diets </LabelHead>
 						{Object.values(params.diets).map((diet, i) => (
 							<CheckboxItem key={i}>
-								<Input
-									type='checkbox'
-									{...(isChecked ? 'checked' : null)}
-									name='myCheckbox'
-									onClick={() => selectOnlyThis(i)}
-								/>
+								<Input type='checkbox' name='myCheckbox' />
 								<CheckboxLabel htmlFor={`${diet}`}>{toCapitalCase(diet)}</CheckboxLabel>
 							</CheckboxItem>
 						))}
@@ -120,12 +154,14 @@ function RecipeFilter({ params }) {
 				<InputGroup>
 					{Object.keys(params.nutrition).map((nutrition, i) => (
 						<InputContainer key={i}>
-							<Input type='number' name='${nutrition}' />
-							<InputLabel htmlFor='${nutrition}'> {toCapitalCase(nutrition)}</InputLabel>
+							<Input type='number' name={`${nutrition}`} onChange={e => handleNutrition(e, i)} />
+							<InputLabel htmlFor={`${nutrition}`}> {toCapitalCase(nutrition)}</InputLabel>
 						</InputContainer>
 					))}
 				</InputGroup>
 			</StyledForm>
+
+			{console.log(nutrition)}
 		</RecipeFilterStyled>
 	);
 }
