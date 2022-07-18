@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState } from "react";
-import Form, { StyledLink } from "../../UI/Form";
+import StyledForm, { StyledLink, StyledInput } from "../../UI/StyledForm";
 import { PillButton } from "../../UI/Button.styles";
 
 const InputContainer = styled.div`
@@ -19,29 +19,20 @@ const LinkWrapper = styled.div`
 
 const Label = styled.label``;
 
-const Input = styled.input`
-  width: 100%;
-  height: 2rem;
-  margin-top: 0.5rem;
-  padding-left: 0.5rem;
-  border-radius: 0.2rem;
-  outline: none;
-`;
-
 function Login() {
   const [token, setToken] = useState();
 
   return (
     <div>
-      <Form>
+      <StyledForm>
         <FormHeader> Log In</FormHeader>
         <InputContainer>
           <Label>Username </Label>
-          <Input type="text" name="uname" required />
+          <StyledInput type="text" name="uname" required />
         </InputContainer>
         <InputContainer>
           <Label>Password </Label>
-          <Input type="password" name="pass" required />
+          <StyledInput type="password" name="pass" required />
         </InputContainer>
 
         <PillButton type="submit">Log In</PillButton>
@@ -49,7 +40,7 @@ function Login() {
           <StyledLink to="/forgot-password">Forgot Password?</StyledLink> | {""}
           <StyledLink to="/Signup">No Account?</StyledLink>
         </LinkWrapper>
-      </Form>
+      </StyledForm>
     </div>
   );
 }
