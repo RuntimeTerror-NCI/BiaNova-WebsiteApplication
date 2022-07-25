@@ -1,11 +1,21 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+// import { useState } from 'react';
+import { Formik, useFormik, Field, Form } from 'formik';
 
-const InputContainer = styled.div`
-	padding: 0.8rem 0;
+const CheckboxGroup = styled.div`
 	display: flex;
-	gap: 1rem;
-	align-items: center;
+	flex-direction: column;
+	padding: 5px;
+`;
+
+const FilterContainer = styled.div`
+	display: flex;
+	width: 100vw;
+	margin-top: 5rem;
+`;
+
+const CheckboxContainer = styled.div`
+	display: flex;
 `;
 
 const LabelHead = styled.label`
@@ -14,10 +24,14 @@ const LabelHead = styled.label`
 	padding-bottom: 6px;
 `;
 
-const Input = styled.input`
-	height: 30px;
-	width: 50px;
-	padding: 0.5rem;
+const CheckboxItem = styled.div`
+	display: flex;
+	height: 2rem;
+	align-items: center;
+`;
+const CheckboxLabel = styled.label`
+	padding-left: 15px;
+	width: 8rem;
 `;
 
 const Checkbox = styled.input`
@@ -26,143 +40,166 @@ const Checkbox = styled.input`
 	height: 1rem;
 `;
 
-const StyledForm = styled.form`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 1rem;
-	background-color: white;
-	width: 90%;
-	margin: auto;
-	padding: 2rem 4rem;
-`;
-
-const CheckboxContainer = styled.div`
-	display: flex;
-	gap: 2rem;
-`;
-
-const InputGroup = styled.div`
-	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
-	gap: 50px 60px;
-	justify-content: center;
-`;
-
-const CheckboxItem = styled.div`
-	display: flex;
-	height: 2rem;
-	align-items: center;
-`;
-
-const CheckboxGroup = styled.div`
-	display: flex;
-	flex-direction: column;
-	padding: 5px;
-`;
-
-const CheckboxLabel = styled.label`
-	padding-left: 15px;
-	width: 8rem;
-`;
-
-const InputLabel = styled.label`
-	width: 5rem;
-`;
-
-const RecipeFilterStyled = styled.div`
-	margin-top: 2rem;
-`;
-
-const RadioButton = styled.input`
-	width: 1rem;
-	height: 1rem;
-	cursor: pointer;
-`;
-
-function RecipeFilter({ open, params }) {
-	const [filterParams, setFilterParams] = useState({
-		intolerances: [],
-		diet: '',
-		nutrition: [],
+function RecipeFilter() {
+	const formik = useFormik({
+		enableReinitialize: true,
+		initialValues: {
+			intolerances: [],
+			diets: [],
+			nutritions: [],
+		},
+		onSubmit: values => {
+			console.log(values);
+		},
 	});
 
-	const [nutrition, setNutrition] = useState([]);
+	const intolerances = [
+		'dairy',
+		'egg',
+		'gluten',
+		'peanut',
+		'sesame',
+		'seafood',
+		'shellfish',
+		'soy',
+		'sulfite',
+		'treeNut',
+		'wheat',
+	];
 
-	const [intolerances, setIntolerances] = useState([{ name: '', isChecked: false }]);
+	const diets = [
+		'gluten free',
+		'ketogenic',
+		'vegetarian',
+		'lacto-vegetarian',
+		'ovo-vegetarian',
+		'vegan',
+		'pescetarian',
+		'paleo',
+		'primal',
+		'low FODMAP',
+		'whole 30',
+	];
 
-	function handleCheckboxSelection(e) {
-		let capture = e.target.checked;
-		let value = e.target.checked.value;
-		console.log(capture, value);
-	}
+	const nutritions = [
+		'minCarbs',
+		'maxCarbs',
+		'minProtein',
+		'maxProtein',
+		'minCalories',
+		'maxCalories',
+		'minFat',
+		'maxFat',
+		'minSaturatedFat',
+		'maxSaturatedFat',
+		'minSodium',
+		'maxSodium',
+		'minSugar',
+		'maxSugar',
+	];
 
-	function handleNutrition(e, i) {
-		let newNutrition = [...nutrition];
-		let capture = e.target.value;
-		let text = e.currentTarget.name.toString();
-
-		if (capture > 0) {
-			if (newNutrition.includes(`&${text}`)) {
-				console.log('found' + newNutrition);
-			}
-			newNutrition.push(`&${text}=${capture}`);
+	const handleIntoleranceChange = e => {
+		const { checked, name } = e.target;
+		if (checked) {
+			formik.setFieldValue('intolerances', [...formik.values.intolerances, name]);
+		} else {
+			formik.setFieldValue(
+				'intolerances',
+				formik.values.intolerances.filter(val => val !== name)
+			);
 		}
-		setNutrition(newNutrition);
-	}
+	};
 
-	function toCapitalCase(string) {
-		return string.charAt(0).toUpperCase() + string.slice(1);
-	}
+	const handleDietChange = e => {
+		const { checked, name } = e.target;
+		if (checked) {
+			formik.setFieldValue('diets', [...formik.values.diets, name]);
+		} else {
+			formik.setFieldValue(
+				'diets',
+				formik.values.diets.filter(val => val !== name)
+			);
+		}
+	};
 
-	if (!open) return null;
+	const handleNutritionChange = e => {
+		const { checked, name } = e.target;
+		if (checked) {
+			formik.setFieldValue('nutritions', [...formik.values.nutritions, name]);
+		} else {
+			formik.setFieldValue(
+				'nutritions',
+				formik.values.nutritions.filter(val => val !== name)
+			);
+		}
+	};
 
 	return (
-		<RecipeFilterStyled>
-			<StyledForm>
-				<CheckboxContainer>
-					<CheckboxGroup>
-						<LabelHead> Intolerances </LabelHead>
-						{params.intolerances.map((intolerance, i) => (
-							<CheckboxItem key={i}>
-								<Checkbox
-									name={`${intolerance}`}
-									type='checkbox'
-									onChange={e => handleCheckboxSelection(e)}
-									value='${intolerance}'
-								/>
-								<CheckboxLabel htmlFor={`${intolerance}`}>
-									{toCapitalCase(intolerance)}
-								</CheckboxLabel>
-							</CheckboxItem>
-						))}
-					</CheckboxGroup>
+		<Formik>
+			<Form onSubmit={formik.handleSubmit}>
+				<FilterContainer>
+					<CheckboxContainer>
+						<CheckboxGroup>
+							<LabelHead> Intolerances </LabelHead>
+							<div role='group' aria-labelledby='checkbox-group'>
+								{intolerances.map(intolerance => (
+									<CheckboxItem key={intolerance}>
+										<Field
+											type='checkbox'
+											id={intolerance}
+											name={intolerance}
+											checked={formik.values.intolerances.includes(intolerance)}
+											onChange={handleIntoleranceChange}
+										/>
+										<CheckboxLabel htmlFor={intolerance}> {intolerance} </CheckboxLabel>
+									</CheckboxItem>
+								))}
+							</div>
+						</CheckboxGroup>
+					</CheckboxContainer>
 
-					<CheckboxGroup>
-						{' '}
-						<LabelHead> Diets </LabelHead>
-						{Object.values(params.diets).map((diet, i) => (
-							<CheckboxItem key={i}>
-								<Input type='checkbox' name='myCheckbox' />
-								<CheckboxLabel htmlFor={`${diet}`}>{toCapitalCase(diet)}</CheckboxLabel>
-							</CheckboxItem>
-						))}
-					</CheckboxGroup>
-				</CheckboxContainer>
+					<CheckboxContainer>
+						<CheckboxGroup>
+							<LabelHead> Diets </LabelHead>
+							<div role='group' aria-labelledby='checkbox-group'>
+								{diets.map(diet => (
+									<CheckboxItem key={diet}>
+										<Field
+											type='checkbox'
+											id={diet}
+											name={diet}
+											checked={formik.values.diets.includes(diet)}
+											onChange={handleDietChange}
+										/>
+										<label htmlFor={diet}> {diet} </label>
+									</CheckboxItem>
+								))}
+							</div>
+						</CheckboxGroup>
+					</CheckboxContainer>
 
-				<InputGroup>
-					{Object.keys(params.nutrition).map((nutrition, i) => (
-						<InputContainer key={i}>
-							<Input type='number' name={`${nutrition}`} onChange={e => handleNutrition(e, i)} />
-							<InputLabel htmlFor={`${nutrition}`}> {toCapitalCase(nutrition)}</InputLabel>
-						</InputContainer>
-					))}
-				</InputGroup>
-			</StyledForm>
-
-			{console.log(nutrition)}
-		</RecipeFilterStyled>
+					<CheckboxContainer>
+						<CheckboxGroup>
+							<LabelHead> Nutrition </LabelHead>
+							<div role='group' aria-labelledby='checkbox-group'>
+								{nutritions.map(nutrition => (
+									<CheckboxItem key={nutrition}>
+										<Field
+											type='number'
+											id={nutrition}
+											name={nutrition}
+											checked={formik.values.nutritions.includes(nutrition)}
+											onChange={handleNutritionChange}
+										/>
+										<label htmlFor={nutrition}> {nutrition} </label>
+									</CheckboxItem>
+								))}
+							</div>
+						</CheckboxGroup>
+					</CheckboxContainer>
+				</FilterContainer>
+			</Form>
+		</Formik>
 	);
 }
 

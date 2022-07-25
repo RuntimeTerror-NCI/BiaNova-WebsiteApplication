@@ -1,143 +1,157 @@
-import styled from "styled-components";
-import { Wrapper, StyledLink, StyledInput } from "../../UI/StyledForm";
-import { PillButton } from "../../UI/Button.styles";
-import React, { useState } from "react";
-import { validEmail, validUsername, validPassword } from "../../UI/Regex";
+import styled from 'styled-components';
+import { PillButton } from '../../UI/Button.styles';
+import Spinner from '../../UI/Spinner';
+import {
+	StyledForm,
+	InputField,
+	Wrapper,
+	Input,
+	StyledInlineErrorMessage,
+} from '../../UI/StyledForm';
+import { useState } from 'react';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import axios from 'axios';
 
-const initialStates = {
-  username: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-};
+const validationSchema = Yup.object().shape({
+	username: Yup.string()
+		.min(6, 'Your username is too short')
+		.required('Please enter your username')
+		.matches(/^[a-zA-Z0-9]+$/, 'Invalid characters')
+		.trim(),
+	email: Yup.string().email('This email is not valid').required('Please enter your email').trim(),
+	password: Yup.string()
+		.required('Please enter your password')
+		.min(6, 'Your password is too short, it should have at least 6 characters')
+		.matches(
+			/^(?=.*?[A-Za-z])(?=.*?[0-9]).{6,}$/,
+			'Password must contain at least one uppercase letter and one number'
+		)
+		.trim(),
+	confirmPassword: Yup.string()
+		.required('Please retype your password')
+		.oneOf([Yup.ref('password'), null], 'Passwords must match')
+		.trim(),
+});
 
 function Signup() {
-  const [state, setState] = useState(initialStates);
-  const [error, setError] = useState("");
+	const [formValues, setFormValues] = useState({
+		username: '',
+		email: '',
+		password: '',
+		confirmPassword: '',
+	});
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("working");
+	return (
+		<Wrapper>
+			<Formik
+				initialValues={formValues}
+				validationSchema={validationSchema}
+				onSubmit={(values, actions) => {
+					console.log(values);
+					setFormValues(values);
 
-    console.log(state);
+					axios
+						.post('http://bianova.herokuapp.com/register', {
+							'username': formValues.username,
+							'email': formValues.email,
+							'password': formValues.password,
+						})
+						.then(response => {
+							console.log(response);
+						})
+						.catch(error => {
+							console.log(error);
+						});
 
-    for (let key in state) {
-      if (state[key] === "") {
-        setError(`you must provide the ${key}`);
-        return;
-      }
+					const timeOut = setTimeout(() => {
+						actions.setSubmitting(false);
 
-      if (!validUsername.test(state[key] === "username")) {
-        setError("Please Enter a Valid Username!");
-        return;
-      }
+						clearTimeout(timeOut);
+					}, 1000);
+				}}>
+				{({ values, errors, touched, handleSubmit, isSubmitting, isValidating, isValid }) => {
+					return (
+						<>
+							<StyledForm name='signup' method='post' onSubmit={handleSubmit}>
+								<InputField>
+									<Label htmlFor='username'>Username</Label>
+									<Input
+										type='text'
+										name='username'
+										autoCapitalize='off'
+										autoCorrect='off'
+										valid={touched.username && !errors.username}
+										error={touched.username && errors.username}
+									/>
 
-      if (!validEmail.test(state[key] === "email")) {
-        setError("Please Enter a Valid Email!");
-        return;
-      }
+									{errors.username && touched.username && (
+										<StyledInlineErrorMessage>{errors.username}</StyledInlineErrorMessage>
+									)}
+								</InputField>
 
-      if (!validPassword.test(state[key] === "password")) {
-        setError("Please Enter a Valid Password!");
-        return;
-      }
+								<InputField>
+									<Label htmlFor='email'>Email</Label>
+									<Input
+										type='email'
+										name='email'
+										autoCapitalize='off'
+										autoCorrect='off'
+										autoComplete='email'
+										valid={touched.email && !errors.email}
+										error={touched.email && errors.email}
+									/>
 
-      if (!validPassword.test(state[key] === "confirmPassword")) {
-        setError("Please Enter a Valid Password!");
-        return;
-      }
-    }
+									{errors.email && touched.email && (
+										<StyledInlineErrorMessage>{errors.email}</StyledInlineErrorMessage>
+									)}
+								</InputField>
 
-    setError("");
-  };
+								<InputField>
+									<Label htmlFor='password'>Password</Label>
+									<Input
+										type='password'
+										name='password'
+										autoCapitalize='off'
+										autoCorrect='off'
+										valid={touched.password && !errors.password}
+										error={touched.password && errors.password}
+									/>
 
-  const handleInput = (e) => {
-    const inputName = e.currentTarget.name;
-    const value = e.currentTarget.value;
+									{errors.password && touched.password && (
+										<StyledInlineErrorMessage>{errors.password}</StyledInlineErrorMessage>
+									)}
+								</InputField>
 
-    setState((prev) => ({ ...prev, [inputName]: value })); //creates properties computed on that value
-  };
+								<InputField>
+									<Label htmlFor='confirmPassword'>Confirm Password</Label>
+									<Input
+										type='password'
+										name='confirmPassword'
+										autoCapitalize='off'
+										autoCorrect='off'
+										valid={touched.confirmPassword && !errors.confirmPassword}
+										error={touched.confirmPassword && errors.confirmPassword}
+									/>
 
-  return (
-    <Wrapper>
-      <StyledForm onSubmit={handleSubmit}>
-        <FormHeader> Sign Up </FormHeader>
+									{errors.confirmPassword && touched.confirmPassword && (
+										<StyledInlineErrorMessage>{errors.confirmPassword}</StyledInlineErrorMessage>
+									)}
+								</InputField>
 
-        <InputContainer>
-          <Label> Username </Label>
-          <StyledInput
-            type="text"
-            name="username"
-            value={state.name}
-            onChange={handleInput}
-          />
-        </InputContainer>
-
-        <InputContainer>
-          <Label> Email </Label>
-          <StyledInput
-            type="email"
-            name="email"
-            value={state.name}
-            onChange={handleInput}
-          />
-        </InputContainer>
-
-        <InputContainer>
-          <Label> Password </Label>
-          <StyledInput
-            type="password"
-            name="password"
-            value={state.name}
-            onChange={handleInput}
-          />
-        </InputContainer>
-
-        <InputContainer>
-          <Label> Re-Enter Password </Label>
-          <StyledInput
-            type="password"
-            name="confirmPassword"
-            onChange={handleInput}
-            value={state.name}
-          />
-        </InputContainer>
-
-        {error && (
-          <div id="error">
-            <p> {error} </p>
-          </div>
-        )}
-
-        <PillButton type="submit">Sign Up!</PillButton>
-        <LinkWrapper>
-          <StyledLink to="/Login">Already have an Account?</StyledLink>
-        </LinkWrapper>
-      </StyledForm>
-    </Wrapper>
-  );
+								<PillButton type='submit' disabled={!isValid || isSubmitting}>
+									{isSubmitting ? `Submitting...` : `Submit`}
+								</PillButton>
+								{isSubmitting && <Spinner />}
+							</StyledForm>
+						</>
+					);
+				}}
+			</Formik>
+		</Wrapper>
+	);
 }
 
-const InputContainer = styled.div`
-  padding: 0.8rem 0;
-  width: 25rem;
-`;
-
-const FormHeader = styled.h1`
-  margin-top: 3rem;
-`;
-
 const Label = styled.label``;
-
-const LinkWrapper = styled.div`
-  margin: auto;
-  margin-top: 2rem;
-`;
-
-const StyledForm = styled.form`
-  display: flex;
-  padding: 3rem 8rem 4rem;
-  flex-direction: column;
-`;
 
 export default Signup;
