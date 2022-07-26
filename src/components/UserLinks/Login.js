@@ -1,8 +1,14 @@
 import styled from 'styled-components';
-import React, { useEffect, useState } from 'react';
-import { Formik, Form, ErrorMessage } from 'formik';
+import React, { useState } from 'react';
+import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Input, StyledInlineErrorMessage, InputField, Wrapper } from '../../UI/StyledForm';
+import {
+	Input,
+	StyledInlineErrorMessage,
+	InputField,
+	Wrapper,
+	StyledForm,
+} from '../../UI/StyledForm';
 import { PillButton } from '../../UI/Button.styles';
 import axios from 'axios';
 import Spinner from '../../UI/Spinner';
@@ -14,24 +20,15 @@ const validationScehma = Yup.object().shape({
 });
 
 function Login() {
-	const [isShown, setIsShown] = useState(false);
 	const [errMessage, setErrMessage] = useState('');
 	const [formValues, setFormValues] = useState({
 		username: '',
 		password: '',
 	});
 
-	useEffect(() => {
-		if (!isShown) {
-			const timer = setTimeout(() => {}, 1000);
-			return () => clearTimeout(timer);
-		}
-		setIsShown(prev => !prev);
-	}, [isShown, errMessage]);
-
 	return (
 		<Wrapper>
-			{isShown && <Error close={() => setIsShown(prev => !prev)}>{errMessage}</Error>}
+			<Error errMsg={errMessage} />
 			<Formik
 				initialValues={formValues}
 				validationSchema={validationScehma}
@@ -49,11 +46,11 @@ function Login() {
 							console.log(data);
 						})
 						.catch(error => {
-							if (error.response === 403) {
-								setIsShown(prev => !prev);
-								setErrMessage('Request Failed');
+							if (error.response.status === 403) {
+								setErrMessage('Username or password are incorrect');
+							} else {
+								setErrMessage('Something went wrong');
 							}
-							console.log(error.response.data);
 						});
 
 					const timeOut = setTimeout(() => {
@@ -65,7 +62,7 @@ function Login() {
 				{({ errors, touched, handleSubmit, isSubmitting, isValid }) => {
 					return (
 						<>
-							<Form name='login' method='post' onSubmit={handleSubmit}>
+							<StyledForm name='login' method='post' onSubmit={handleSubmit}>
 								<InputField>
 									<Label htmlFor='username'>
 										Username
@@ -102,7 +99,7 @@ function Login() {
 									{isSubmitting ? `Submitting...` : `Submit`}
 								</PillButton>
 								{isSubmitting && <Spinner />}
-							</Form>
+							</StyledForm>
 						</>
 					);
 				}}

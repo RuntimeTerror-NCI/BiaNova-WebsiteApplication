@@ -3,6 +3,8 @@ import SearchBar from '../SearchBar/SearchBar';
 import RecipeFilter from '../Recipe Filter/RecipeFilter';
 import styled from 'styled-components';
 import RandomRecipes from '../RandomRecipes/RandomRecipes';
+import RecipeList from '../RecipeResult/RecipeList';
+import axios from 'axios';
 
 const Button = styled.button`
 	cursor: pointer;
@@ -42,6 +44,7 @@ const ResultsContainer = styled.div`
 function SearchPage() {
 	const [openFilter, setOpenFilter] = useState(false);
 	const [searchParams, setSearchParams] = useState({});
+	const [query, setQuery] = useState();
 
 	const params = {
 		query: 'chicken',
@@ -98,21 +101,42 @@ function SearchPage() {
 		number: '10',
 	};
 
+	let list = ['cheese', 'bread', 'milk'];
+
+	const handleParams = e => {
+		let param = e.target.value;
+		setQuery(param);
+	};
+
+	const handleSearch = e => {
+		e.preventDefault();
+		axios
+			.get(`http://bianova.herokuapp.com/externalAPI/${query}`, {
+				headers: {
+					'Access-Control-Allow-Origin': '*',
+					'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
+					'Access-Control-Allow-Headers':
+						'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
+				},
+			})
+			.then(response => {
+				console.log(response);
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	};
+
 	return (
 		<div>
-			<SearchBar />
+			<SearchBar onChange={handleParams} onClick={handleSearch} />
 			<SearchContainer>
 				<Button onClick={() => setOpenFilter(prev => !prev)}>Filter</Button>
 			</SearchContainer>
 			<RecipeFilter searchParams={setSearchParams} params={params} open={openFilter} />
 
 			<ResultsContainer>
-				<RandomRecipes />
-				<RandomRecipes />
-				<RandomRecipes />
-				<RandomRecipes />
-				<RandomRecipes />
-				<RandomRecipes />
+				<RecipeList />
 			</ResultsContainer>
 		</div>
 	);

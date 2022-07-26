@@ -6,12 +6,16 @@ const CheckboxGroup = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 5px;
+	width: 13rem;
 `;
 
 const FilterContainer = styled.div`
 	display: flex;
 	width: 100vw;
+	height: 25rem;
 	margin-top: 5rem;
+	justify-content: center;
+	margin-left: -7rem;
 `;
 
 const CheckboxContainer = styled.div`
@@ -34,10 +38,30 @@ const CheckboxLabel = styled.label`
 	width: 8rem;
 `;
 
-const Checkbox = styled.input`
+const Checkbox = styled(Field)`
 	cursor: pointer;
-	width: 1rem;
-	height: 1rem;
+	width: 1.2rem;
+	height: 1.2rem;
+`;
+
+const NutritionGroup = styled.div`
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	height: 25rem;
+	width: fit-content;
+`;
+
+const NutritionItem = styled.div`
+	display: flex;
+	margin-bottom: 1.2rem;
+	align-items: center;
+	flex: 1 1 1;
+`;
+
+const Input = styled(Field)`
+	width: 4rem;
+	height: 1.3rem;
 `;
 
 function RecipeFilter() {
@@ -144,7 +168,7 @@ function RecipeFilter() {
 							<div role='group' aria-labelledby='checkbox-group'>
 								{intolerances.map(intolerance => (
 									<CheckboxItem key={intolerance}>
-										<Field
+										<Checkbox
 											type='checkbox'
 											id={intolerance}
 											name={intolerance}
@@ -164,14 +188,14 @@ function RecipeFilter() {
 							<div role='group' aria-labelledby='checkbox-group'>
 								{diets.map(diet => (
 									<CheckboxItem key={diet}>
-										<Field
+										<Checkbox
 											type='checkbox'
 											id={diet}
 											name={diet}
 											checked={formik.values.diets.includes(diet)}
 											onChange={handleDietChange}
 										/>
-										<label htmlFor={diet}> {diet} </label>
+										<CheckboxLabel htmlFor={diet}> {diet} </CheckboxLabel>
 									</CheckboxItem>
 								))}
 							</div>
@@ -181,20 +205,20 @@ function RecipeFilter() {
 					<CheckboxContainer>
 						<CheckboxGroup>
 							<LabelHead> Nutrition </LabelHead>
-							<div role='group' aria-labelledby='checkbox-group'>
+							<NutritionGroup role='group' aria-labelledby='checkbox-group'>
 								{nutritions.map(nutrition => (
-									<CheckboxItem key={nutrition}>
-										<Field
+									<NutritionItem key={nutrition}>
+										<Input
 											type='number'
 											id={nutrition}
 											name={nutrition}
 											checked={formik.values.nutritions.includes(nutrition)}
 											onChange={handleNutritionChange}
 										/>
-										<label htmlFor={nutrition}> {nutrition} </label>
-									</CheckboxItem>
+										<CheckboxLabel htmlFor={nutrition}> {nutrition} </CheckboxLabel>
+									</NutritionItem>
 								))}
-							</div>
+							</NutritionGroup>
 						</CheckboxGroup>
 					</CheckboxContainer>
 				</FilterContainer>

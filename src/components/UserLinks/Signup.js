@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { PillButton } from '../../UI/Button.styles';
 import Spinner from '../../UI/Spinner';
+import Error from '../../UI/Error';
 import {
 	StyledForm,
 	InputField,
@@ -35,6 +36,7 @@ const validationSchema = Yup.object().shape({
 });
 
 function Signup() {
+	const [errMessage, setErrMessage] = useState('');
 	const [formValues, setFormValues] = useState({
 		username: '',
 		email: '',
@@ -44,6 +46,7 @@ function Signup() {
 
 	return (
 		<Wrapper>
+			<Error errMsg={errMessage} />
 			<Formik
 				initialValues={formValues}
 				validationSchema={validationSchema}
@@ -61,7 +64,11 @@ function Signup() {
 							console.log(response);
 						})
 						.catch(error => {
-							console.log(error);
+							if (error.response.status === 409) {
+								setErrMessage('This username already exists');
+							} else {
+								setErrMessage('Something went wrong');
+							}
 						});
 
 					const timeOut = setTimeout(() => {
@@ -70,7 +77,7 @@ function Signup() {
 						clearTimeout(timeOut);
 					}, 1000);
 				}}>
-				{({ values, errors, touched, handleSubmit, isSubmitting, isValidating, isValid }) => {
+				{({ errors, touched, handleSubmit, isSubmitting, isValid }) => {
 					return (
 						<>
 							<StyledForm name='signup' method='post' onSubmit={handleSubmit}>

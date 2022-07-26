@@ -1,11 +1,28 @@
 import styled from 'styled-components';
+import { useState, useEffect } from 'react';
 
-function Error(props, { close }) {
+function Error({ errMsg }) {
+	const [isVisible, setIsVisible] = useState(false);
+
+	useEffect(() => {
+		if (!errMsg) {
+			setIsVisible(false);
+			return;
+		}
+
+		setIsVisible(true);
+		const timer = setTimeout(() => {
+			setIsVisible(false);
+		}, 6000);
+		return () => clearTimeout(timer);
+	}, [errMsg]);
+
+	if (!isVisible) return null;
+
 	return (
 		<Frame>
 			<Content>
-				<Button onClick={close}>x</Button>
-				<p>{props.children}</p>
+				<p>{errMsg}</p>
 			</Content>
 		</Frame>
 	);
@@ -25,15 +42,6 @@ const Frame = styled.div`
 
 const Content = styled.div`
 	padding: 0.8rem 1.5rem;
-`;
-
-const Button = styled.button`
-	position: absolute;
-	top: 0;
-	right: 0;
-	border: none;
-	background-color: transparent;
-	cursor: pointer;
 `;
 
 export default Error;
