@@ -37,7 +37,7 @@ function Login() {
 					setFormValues(values);
 
 					axios
-						.post('http://bianova.herokuapp.com/login', {
+						.post('https://bianova.herokuapp.com/login', {
 							'username': formValues.username,
 							'password': formValues.password,
 						})

@@ -111,8 +111,9 @@ function SearchPage() {
 	const handleSearch = e => {
 		e.preventDefault();
 		axios
-			.get(`http://bianova.herokuapp.com/externalAPI/${query}`, {
-				headers: {
+			.get(`https://bianova.herokuapp.com/externalAPI/${query}`, {
+			// .get(`http://localhost:8080/externalAPI/${query}`, {
+		headers: {
 					'Access-Control-Allow-Origin': '*',
 					'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
 					'Access-Control-Allow-Headers':
