@@ -111,13 +111,13 @@ function SearchPage() {
 	const handleSearch = e => {
 		e.preventDefault();
 		axios
-			.get(`https://bianova.herokuapp.com/externalAPI/${query}`, {
-			// .get(`http://localhost:8080/externalAPI/${query}`, {
+			.get(`https://bianova.herokuapp.com/externalApi/${query}`, {
+			// .get(`http://localhost:8080/externalApi/${query}`, {
 		headers: {
 					'Access-Control-Allow-Origin': '*',
 					'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
 					'Access-Control-Allow-Headers':
-						'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
+						'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Allow-Origin, Access-Control-Request-Headers',
 				},
 			})
 			.then(response => {
