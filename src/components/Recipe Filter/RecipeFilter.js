@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 // import { useState } from 'react';
 import { Formik, useFormik, Field, Form } from 'formik';
+import { useState } from 'react';
 
 const CheckboxGroup = styled.div`
 	display: flex;
@@ -64,12 +65,18 @@ const Input = styled(Field)`
 	height: 1.3rem;
 `;
 
+const RadioLabel = styled.label``;
+
+const Radio = styled(Field)``;
+
 function RecipeFilter() {
+	const [state, setState] = useState('');
+	const [nutrition, setNutrition] = useState([]);
+
 	const formik = useFormik({
 		enableReinitialize: true,
 		initialValues: {
 			intolerances: [],
-			diets: [],
 			nutritions: [],
 		},
 		onSubmit: values => {
@@ -89,20 +96,6 @@ function RecipeFilter() {
 		'sulfite',
 		'treeNut',
 		'wheat',
-	];
-
-	const diets = [
-		'gluten free',
-		'ketogenic',
-		'vegetarian',
-		'lacto-vegetarian',
-		'ovo-vegetarian',
-		'vegan',
-		'pescetarian',
-		'paleo',
-		'primal',
-		'low FODMAP',
-		'whole 30',
 	];
 
 	const nutritions = [
@@ -134,18 +127,6 @@ function RecipeFilter() {
 		}
 	};
 
-	const handleDietChange = e => {
-		const { checked, name } = e.target;
-		if (checked) {
-			formik.setFieldValue('diets', [...formik.values.diets, name]);
-		} else {
-			formik.setFieldValue(
-				'diets',
-				formik.values.diets.filter(val => val !== name)
-			);
-		}
-	};
-
 	const handleNutritionChange = e => {
 		const { checked, name } = e.target;
 		if (checked) {
@@ -158,71 +139,152 @@ function RecipeFilter() {
 		}
 	};
 
+	const onChange = e => {
+		let nutr = [];
+		if (e.target.value.trim() >= 0) {
+			setState(e.target.value);
+		}
+		nutr.push(state);
+		setNutrition(nutr);
+		console.log('nutrition: ' + nutrition, 'nutr ' + nutr, e.target.name, e.target.value);
+	};
+
+	const sleep = ms => new Promise(r => setTimeout(r, ms));
 	return (
-		<Formik>
-			<Form onSubmit={formik.handleSubmit}>
-				<FilterContainer>
-					<CheckboxContainer>
-						<CheckboxGroup>
-							<LabelHead> Intolerances </LabelHead>
-							<div role='group' aria-labelledby='checkbox-group'>
-								{intolerances.map(intolerance => (
-									<CheckboxItem key={intolerance}>
-										<Checkbox
-											type='checkbox'
-											id={intolerance}
-											name={intolerance}
-											checked={formik.values.intolerances.includes(intolerance)}
-											onChange={handleIntoleranceChange}
-										/>
-										<CheckboxLabel htmlFor={intolerance}> {intolerance} </CheckboxLabel>
-									</CheckboxItem>
-								))}
-							</div>
-						</CheckboxGroup>
-					</CheckboxContainer>
+		<Formik
+			initialValues={{
+				picked: [],
+			}}
+			onSubmit={async values => {
+				await sleep(500);
+				alert(JSON.stringify(values, null, 2));
+				console.log(values);
+			}}>
+			{({ values }) => (
+				<Form>
+					<FilterContainer>
+						<CheckboxContainer>
+							<CheckboxGroup>
+								<LabelHead> Intolerances </LabelHead>
+								<div role='group' aria-labelledby='checkbox-group'>
+									{intolerances.map(intolerance => (
+										<CheckboxItem key={intolerance}>
+											<Checkbox
+												type='checkbox'
+												id={intolerance}
+												name={intolerance}
+												checked={formik.values.intolerances.includes(intolerance)}
+												onChange={handleIntoleranceChange}
+											/>
+											<CheckboxLabel htmlFor={intolerance}> {intolerance} </CheckboxLabel>
+										</CheckboxItem>
+									))}
+								</div>
+							</CheckboxGroup>
+						</CheckboxContainer>
 
-					<CheckboxContainer>
-						<CheckboxGroup>
-							<LabelHead> Diets </LabelHead>
-							<div role='group' aria-labelledby='checkbox-group'>
-								{diets.map(diet => (
-									<CheckboxItem key={diet}>
-										<Checkbox
-											type='checkbox'
-											id={diet}
-											name={diet}
-											checked={formik.values.diets.includes(diet)}
-											onChange={handleDietChange}
-										/>
-										<CheckboxLabel htmlFor={diet}> {diet} </CheckboxLabel>
+						<CheckboxContainer>
+							<CheckboxGroup>
+								<LabelHead> Diets </LabelHead>
+								<div role='group' aria-labelledby='my-radio-group'>
+									<CheckboxItem>
+										<RadioLabel>
+											<Radio type='radio' name='picked' value='gluten-free' />
+											glutenFree
+										</RadioLabel>
 									</CheckboxItem>
-								))}
-							</div>
-						</CheckboxGroup>
-					</CheckboxContainer>
 
-					<CheckboxContainer>
-						<CheckboxGroup>
-							<LabelHead> Nutrition </LabelHead>
-							<NutritionGroup role='group' aria-labelledby='checkbox-group'>
-								{nutritions.map(nutrition => (
-									<NutritionItem key={nutrition}>
+									<RadioLabel>
+										<Radio type='radio' name='picked' value='keotgenic' />
+										ketogenic
+									</RadioLabel>
+
+									<CheckboxItem>
+										<RadioLabel>
+											<Radio type='radio' name='picked' value='vegatarian' />
+											vegatarian
+										</RadioLabel>
+									</CheckboxItem>
+
+									<CheckboxItem>
+										<RadioLabel>
+											<Radio type='radio' name='picked' value='lacto-vegatarian' />
+											lactoVegetarian
+										</RadioLabel>
+									</CheckboxItem>
+
+									<CheckboxItem>
+										<RadioLabel>
+											<Radio type='radio' name='picked' value='ovo-vegatarian' />
+											ovo-vegatarian
+										</RadioLabel>
+									</CheckboxItem>
+									<CheckboxItem>
+										<RadioLabel>
+											<Radio type='radio' name='picked' value='vegan' />
+											vegan
+										</RadioLabel>
+									</CheckboxItem>
+
+									<CheckboxItem>
+										<RadioLabel>
+											<Radio type='radio' name='picked' value='pescatarian' />
+											pescatarian
+										</RadioLabel>
+									</CheckboxItem>
+
+									<CheckboxItem>
+										<RadioLabel>
+											<Radio type='radio' name='picked' value='paleo' />
+											paleo
+										</RadioLabel>
+									</CheckboxItem>
+
+									<CheckboxItem>
+										<RadioLabel>
+											<Radio type='radio' name='picked' value='primal' />
+											primal
+										</RadioLabel>
+									</CheckboxItem>
+
+									<CheckboxItem>
+										<RadioLabel>
+											<Radio type='radio' name='picked' value='lowFodmap' />
+											lowFodmap
+										</RadioLabel>
+									</CheckboxItem>
+
+									<CheckboxItem>
+										<RadioLabel>
+											<Radio type='radio' name='picked' value='Whole30' />
+											Whole30
+										</RadioLabel>
+									</CheckboxItem>
+									<div>Picked: {values.picked}</div>
+								</div>
+							</CheckboxGroup>
+						</CheckboxContainer>
+
+						<CheckboxContainer>
+							<CheckboxGroup>
+								<LabelHead> Nutrition </LabelHead>
+								<NutritionGroup role='group' aria-labelledby='checkbox-group'>
+									<NutritionItem>
 										<Input
 											type='number'
-											id={nutrition}
-											name={nutrition}
-											checked={formik.values.nutritions.includes(nutrition)}
-											onChange={handleNutritionChange}
+											name='minCarbs'
+											value={state}
+											onChange={e => onChange(e)}
 										/>
-										<CheckboxLabel htmlFor={nutrition}> {nutrition} </CheckboxLabel>
+										<CheckboxLabel> MinCarbs </CheckboxLabel>
 									</NutritionItem>
-								))}
-							</NutritionGroup>
-						</CheckboxGroup>
-					</CheckboxContainer>
-				</FilterContainer>
-			</Form>
+								</NutritionGroup>
+							</CheckboxGroup>
+						</CheckboxContainer>
+					</FilterContainer>
+					<button type='submit'>Click</button>
+				</Form>
+			)}
 		</Formik>
 	);
 }
