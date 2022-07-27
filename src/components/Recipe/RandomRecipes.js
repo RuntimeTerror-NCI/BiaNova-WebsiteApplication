@@ -41,7 +41,7 @@ const RandomRecipes = () => {
 
 	return (
 		<RandomRecipesStyled>
-			{random.map(({ title, id, image, summary, sourceUrl }) => (
+			{random.map(({ title, id, image, summary }) => (
 				<Card key={id} title={title} img={image} content={summary}></Card>
 			))}
 		</RandomRecipesStyled>

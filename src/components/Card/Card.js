@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import LongText from './LongText';
+import { Link } from 'react-router-dom';
 
-function Card({ img, title, content }) {
+function Card({ img, title, id }) {
 	return (
 		<CardContainer>
 			<ImageContainer>
@@ -9,8 +9,9 @@ function Card({ img, title, content }) {
 			</ImageContainer>
 			<CardContent>
 				<h3>{title} </h3>
-				<LongText content={content} limit={100}></LongText>
+				{/* <LongText content={content} limit={100}></LongText> */}
 			</CardContent>
+			<Link to={`/recipe/${id}`}>View</Link>
 		</CardContainer>
 	);
 }

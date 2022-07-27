@@ -19,12 +19,16 @@ const validationScehma = Yup.object().shape({
 	password: Yup.string().required('Please enter your password').trim(),
 });
 
-function Login() {
+function Login({ setToken }) {
 	const [errMessage, setErrMessage] = useState('');
 	const [formValues, setFormValues] = useState({
 		username: '',
 		password: '',
 	});
+
+	const updatadeFormValues = values => {
+		setFormValues(values);
+	};
 
 	return (
 		<Wrapper>
@@ -34,7 +38,7 @@ function Login() {
 				validationSchema={validationScehma}
 				onSubmit={(values, actions) => {
 					console.log(values);
-					setFormValues(values);
+					updatadeFormValues(values);
 
 					axios
 						.post('https://bianova.herokuapp.com/login', {

@@ -48,7 +48,7 @@ const RadioLabel = styled.label``;
 
 const Radio = styled(Field)``;
 
-function RecipeFilter({ open }) {
+function RecipeFilter({ open, params, searchParams }) {
 	const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 	if (!open) return null;
@@ -62,7 +62,9 @@ function RecipeFilter({ open }) {
 			onSubmit={async values => {
 				await sleep(500);
 				alert(JSON.stringify(values, null, 2));
-				console.log(values);
+				searchParams(values);
+				console.log(values.checked);
+				console.log(values.picked);
 			}}>
 			{({ values }) => (
 				<Form>
@@ -142,8 +144,6 @@ function RecipeFilter({ open }) {
 										<Checkbox type='checkbox' name='checked' value='Wheat'></Checkbox> Wheat
 									</CheckboxLabel>
 								</CheckboxItem>
-
-								<div>CheckSelection: {values.checked + ' '}</div>
 							</CheckboxGroup>
 						</CheckboxContainer>
 
@@ -159,7 +159,7 @@ function RecipeFilter({ open }) {
 									</CheckboxItem>
 
 									<RadioLabel>
-										<Radio type='radio' name='picked' value='keotgenic' />
+										<Radio type='radio' name='picked' value='ketogenic' />
 										ketogenic
 									</RadioLabel>
 
@@ -225,10 +225,9 @@ function RecipeFilter({ open }) {
 										</RadioLabel>
 									</CheckboxItem>
 								</div>
-
-								<div>RadioSelection: {values.picked}</div>
 							</CheckboxGroup>
 						</CheckboxContainer>
+
 						<button type='submit'>Click</button>
 					</FilterContainer>
 				</Form>

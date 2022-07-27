@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import SearchBar from '../SearchBar/SearchBar';
-import RecipeFilter from '../Recipe Filter/RecipeFilter';
+import RecipeFilter from '../Recipe/RecipeFilter';
 import styled from 'styled-components';
-import RecipeList from '../RecipeResult/RecipeList';
+import RecipeList from '../Recipe/RecipeList';
 import axios from 'axios';
+import Card from '../Card/Card';
+import { Link } from 'react-router-dom';
 
 const Button = styled.button`
 	cursor: pointer;
@@ -42,10 +44,9 @@ const ResultsContainer = styled.div`
 
 function SearchPage() {
 	const [openFilter, setOpenFilter] = useState(false);
-	const [searchParams, setSearchParams] = useState({});
+	const [searchParams, setSearchParams] = useState('');
 	const [query, setQuery] = useState();
 	const [recipeResults, setRecipeResults] = useState([]);
-	const [recipeDetails, setRecipeDetails] = useState('');
 
 	const params = {
 		query: 'chicken',
@@ -82,29 +83,15 @@ function SearchPage() {
 		titleMatch: '',
 		sort: 'calories',
 		sortDirection: 'asc',
-
-		nutrition: {
-			minCarbs: '',
-			maxCarbs: '',
-			minProtein: '',
-			maxProtein: '',
-			minCalories: '',
-			maxCalories: '',
-			minFat: '',
-			maxFat: '',
-			minSaturatedFat: '',
-			maxSaturatedFat: '',
-			minSodium: '',
-			maxSodium: '',
-			minSugar: '',
-			maxSugar: '',
-		},
-		number: '10',
 	};
 
 	const handleParams = e => {
 		let param = e.target.value;
-		setQuery(param);
+		setQuery(`${param},${searchParams}`);
+	};
+
+	const filteredParams = param => {
+		setSearchParams(param);
 	};
 
 	const clearSearchResults = () => {
@@ -113,38 +100,6 @@ function SearchPage() {
 
 	const saveSearchResults = results => {
 		setRecipeResults(results);
-	};
-
-	const updateRecipeDetails = id => {
-		setRecipeDetails({ ...recipeDetails, id: id });
-		console.log('[updateRecipeDetails]: ', recipeDetails);
-	};
-
-	const getRecipeId = id => {
-		let selectedRecipe = id;
-		// updateRecipeDetails(selectedRecipe);
-		setRecipeDetails(selectedRecipe);
-		console.log('[getRecipeId]: ', recipeDetails);
-		console.log(selectedRecipe);
-	};
-
-	const handleShowRecipe = id => {
-		getRecipeId(id);
-		axios
-			.get(`https://bianova.herokuapp.com/externalApiID/${recipeDetails}`, {
-				headers: {
-					'Access-Control-Allow-Origin': '*',
-					'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
-					'Access-Control-Allow-Headers':
-						'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Allow-Origin, Access-Control-Request-Headers',
-				},
-			})
-			.then(response => {
-				console.log(response);
-			})
-			.catch(error => {
-				console.log(error);
-			});
 	};
 
 	const handleSearch = e => {
@@ -160,7 +115,7 @@ function SearchPage() {
 			})
 			.then(response => {
 				let results = response.data.results;
-				console.log(response);
+
 				if (recipeResults.length === 0) {
 					saveSearchResults(results);
 				} else {
@@ -179,14 +134,14 @@ function SearchPage() {
 			<SearchContainer>
 				<Button onClick={() => setOpenFilter(prev => !prev)}>Filter</Button>
 			</SearchContainer>
-			<RecipeFilter searchParams={setSearchParams} params={params} open={openFilter} />
+			<RecipeFilter searchParams={filteredParams} params={params} open={openFilter} />
 
 			<ResultsContainer>
-				<RecipeList
-					onClick={handleShowRecipe}
-					recipeDetails={recipeDetails}
-					recipes={recipeResults}
-				/>
+				{recipeResults.map(({ title, id, image }) => (
+					<div key={id}>
+						<Card id={id} title={title} img={image}></Card>
+					</div>
+				))}
 			</ResultsContainer>
 		</div>
 	);

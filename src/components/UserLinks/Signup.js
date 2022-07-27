@@ -44,6 +44,10 @@ function Signup() {
 		confirmPassword: '',
 	});
 
+	const updatadeFormValues = values => {
+		setFormValues(values);
+	};
+
 	return (
 		<Wrapper>
 			<Error errMsg={errMessage} />
@@ -52,7 +56,7 @@ function Signup() {
 				validationSchema={validationSchema}
 				onSubmit={(values, actions) => {
 					console.log(values);
-					setFormValues(values);
+					updatadeFormValues(values);
 
 					axios
 						.post('https://bianova.herokuapp.com/register', {

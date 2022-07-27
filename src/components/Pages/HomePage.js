@@ -1,7 +1,7 @@
 import Welcome from '../Welcome/Welcome';
 import BadgeBanner from '../BadgeBanner/BadgeBanner';
 import SearchSection from '../SearchSection/SearchSection';
-import RandomRecipes from '../RandomRecipes/RandomRecipes';
+import RandomRecipes from '../Recipe/RandomRecipes';
 
 function HomePage() {
 	return (
