@@ -2,7 +2,6 @@ import { useState } from 'react';
 import SearchBar from '../SearchBar/SearchBar';
 import RecipeFilter from '../Recipe Filter/RecipeFilter';
 import styled from 'styled-components';
-import RandomRecipes from '../RandomRecipes/RandomRecipes';
 import RecipeList from '../RecipeResult/RecipeList';
 import axios from 'axios';
 
@@ -45,6 +44,8 @@ function SearchPage() {
 	const [openFilter, setOpenFilter] = useState(false);
 	const [searchParams, setSearchParams] = useState({});
 	const [query, setQuery] = useState();
+	const [recipeResults, setRecipeResults] = useState([]);
+	const [recipeDetails, setRecipeDetails] = useState('');
 
 	const params = {
 		query: 'chicken',
@@ -101,19 +102,37 @@ function SearchPage() {
 		number: '10',
 	};
 
-	let list = ['cheese', 'bread', 'milk'];
-
 	const handleParams = e => {
 		let param = e.target.value;
 		setQuery(param);
 	};
 
-	const handleSearch = e => {
-		e.preventDefault();
+	const clearSearchResults = () => {
+		setRecipeResults([]);
+	};
+
+	const saveSearchResults = results => {
+		setRecipeResults(results);
+	};
+
+	const updateRecipeDetails = id => {
+		setRecipeDetails({ ...recipeDetails, id: id });
+		console.log('[updateRecipeDetails]: ', recipeDetails);
+	};
+
+	const getRecipeId = id => {
+		let selectedRecipe = id;
+		// updateRecipeDetails(selectedRecipe);
+		setRecipeDetails(selectedRecipe);
+		console.log('[getRecipeId]: ', recipeDetails);
+		console.log(selectedRecipe);
+	};
+
+	const handleShowRecipe = id => {
+		getRecipeId(id);
 		axios
-			.get(`https://bianova.herokuapp.com/externalApi/${query}`, {
-			// .get(`http://localhost:8080/externalApi/${query}`, {
-		headers: {
+			.get(`https://bianova.herokuapp.com/externalApiID/${recipeDetails}`, {
+				headers: {
 					'Access-Control-Allow-Origin': '*',
 					'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
 					'Access-Control-Allow-Headers':
@@ -122,6 +141,32 @@ function SearchPage() {
 			})
 			.then(response => {
 				console.log(response);
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	};
+
+	const handleSearch = e => {
+		e.preventDefault();
+		axios
+			.get(`https://bianova.herokuapp.com/externalApi/${query}`, {
+				headers: {
+					'Access-Control-Allow-Origin': '*',
+					'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
+					'Access-Control-Allow-Headers':
+						'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Allow-Origin, Access-Control-Request-Headers',
+				},
+			})
+			.then(response => {
+				let results = response.data.results;
+				console.log(response);
+				if (recipeResults.length === 0) {
+					saveSearchResults(results);
+				} else {
+					clearSearchResults();
+					saveSearchResults(results);
+				}
 			})
 			.catch(error => {
 				console.log(error);
@@ -137,7 +182,11 @@ function SearchPage() {
 			<RecipeFilter searchParams={setSearchParams} params={params} open={openFilter} />
 
 			<ResultsContainer>
-				<RecipeList />
+				<RecipeList
+					onClick={handleShowRecipe}
+					recipeDetails={recipeDetails}
+					recipes={recipeResults}
+				/>
 			</ResultsContainer>
 		</div>
 	);
