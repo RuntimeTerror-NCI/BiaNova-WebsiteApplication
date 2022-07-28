@@ -11,12 +11,19 @@ const LinksWrapper = styled.p`
 	font-weight: 500;
 `;
 
-function HeaderLinks() {
+function HeaderLinks({ token, user }) {
 	return (
 		<Links>
-			<LinksWrapper>
-				<StyledLink to='/login'>Log In</StyledLink> | <StyledLink to='/signup'>Sign Up</StyledLink>
-			</LinksWrapper>
+			{token != null ? (
+				<LinksWrapper>
+					<StyledLink to='/dashboard'>Hello, {user}</StyledLink>
+				</LinksWrapper>
+			) : (
+				<LinksWrapper>
+					<StyledLink to='/login'>Log In</StyledLink> |
+					<StyledLink to='/signup'> Sign Up</StyledLink>
+				</LinksWrapper>
+			)}
 		</Links>
 	);
 }

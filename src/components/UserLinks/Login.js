@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -19,15 +20,27 @@ const validationScehma = Yup.object().shape({
 	password: Yup.string().required('Please enter your password').trim(),
 });
 
-function Login({ setToken }) {
+function Login({ setToken, setUser }) {
 	const [errMessage, setErrMessage] = useState('');
 	const [formValues, setFormValues] = useState({
 		username: '',
 		password: '',
 	});
 
+	const navigate = useNavigate();
+
+	const handleRedirect = () => {
+		navigate('/');
+	};
+
 	const updatadeFormValues = values => {
-		setFormValues(values);
+		let newValues = values;
+		setFormValues(newValues);
+	};
+
+	const updateCredentials = (user, token) => {
+		setUser(user);
+		setToken(token);
 	};
 
 	return (
@@ -37,7 +50,6 @@ function Login({ setToken }) {
 				initialValues={formValues}
 				validationSchema={validationScehma}
 				onSubmit={(values, actions) => {
-					console.log(values);
 					updatadeFormValues(values);
 
 					axios
@@ -46,15 +58,17 @@ function Login({ setToken }) {
 							'password': formValues.password,
 						})
 						.then(response => {
-							let data = response.data;
-							console.log(data);
+							let [user, token] = response.data.split(' ');
+							setUser(user);
+							setToken(token);
+
+							if (token) {
+								handleRedirect();
+							}
 						})
 						.catch(error => {
-							if (error.response.status === 403) {
-								setErrMessage('Username or password are incorrect');
-							} else {
-								setErrMessage('Something went wrong');
-							}
+							console.log(error);
+							setErrMessage('Something went wrong');
 						});
 
 					const timeOut = setTimeout(() => {

@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SearchBar from '../SearchBar/SearchBar';
 import RecipeFilter from '../Recipe/RecipeFilter';
 import styled from 'styled-components';
 import RecipeList from '../Recipe/RecipeList';
 import axios from 'axios';
 import Card from '../Card/Card';
-import { Link } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 const Button = styled.button`
 	cursor: pointer;
@@ -39,14 +39,20 @@ const ResultsContainer = styled.div`
 	flex-flow: wrap;
 	justify-content: center;
 	flex-basis: calc(100% / 5);
-	background-color: white;
 `;
 
 function SearchPage() {
 	const [openFilter, setOpenFilter] = useState(false);
-	const [searchParams, setSearchParams] = useState('');
+	const [searchParams, setSearchParams] = useSearchParams();
 	const [query, setQuery] = useState();
 	const [recipeResults, setRecipeResults] = useState([]);
+
+	let location = useLocation();
+	const rResults = location.state;
+
+	useEffect(() => {
+		saveSearchResults(rResults);
+	}, [rResults]);
 
 	const params = {
 		query: 'chicken',

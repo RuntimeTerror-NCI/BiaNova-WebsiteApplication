@@ -11,6 +11,7 @@ const CardView = () => {
 		readyInMinutes: '',
 		summary: '',
 		analyzedInstructions: [],
+		servings: '',
 	});
 	const { id } = useParams();
 
@@ -38,6 +39,7 @@ const CardView = () => {
 						image: response.data.image,
 						readyInMinutes: response.data.readyInMinutes,
 						summary: response.data.summary,
+						servings: response.data.servings,
 					});
 				} else if (response.data.analyzedInstructions[0].steps) {
 					console.log('success');
@@ -47,6 +49,7 @@ const CardView = () => {
 						readyInMinutes: response.data.readyInMinutes,
 						summary: response.data.summary,
 						analyzedInstructions: response.data.analyzedInstructions[0].steps,
+						servings: response.data.servings,
 					});
 				}
 			})
@@ -55,44 +58,75 @@ const CardView = () => {
 	}, [id]);
 
 	return (
-		<div>
-			<div className='recipe-container'>
-				<div>
-					<img className='recipe-image' alt='recipeImage' src={data.image} />
-				</div>
-
-				<h1 className='recipe-title'>{data.title}</h1>
-
-				<p id='recipe-summary'>{parse(data.summary)}</p>
+		<Wrapper>
+			<div>
+				<Header>
+					<ViewImage alt={data.title} src={data.image} />
+					<ViewInfo>
+						<h1>{data.title}</h1>
+						{data.readyInMinutes ? (
+							<p>
+								<b>Cooking time:</b> {data.readyInMinutes} minutes
+							</p>
+						) : null}
+						{data.servings ? <p>{data.servings} servings</p> : null}
+					</ViewInfo>
+				</Header>
+				<Summary>
+					<h1>Summary</h1>
+					<p>{parse(data.summary)}</p>
+				</Summary>
 			</div>
 
 			<div>
+				{data.analyzedInstructions ? <h1>Instructions</h1> : null}
 				{data.analyzedInstructions?.map(step => (
 					<div key={step.number}>
-						<p>{step.number}</p>
-						<p>{step.step}</p>
+						<p>
+							{step.number}: {step.step}
+						</p>
 					</div>
 				))}
 			</div>
 
-			<div className='back'>
+			<div>
 				<Link to='/search'>SeachPage</Link>
 			</div>
-		</div>
+		</Wrapper>
 	);
 };
 export default CardView;
 
-export const CardWrapper = styled.div`
+export const Wrapper = styled.div`
 	display: flex;
-	width: 75vw;
-	align-items: right;
-	flex-wrap: nowrap;
+	width: 80vw;
+	flex-wrap: wrap;
 	margin: auto;
 `;
 
-export const ViewImage = styled.div``;
+const Header = styled.div`
+	display: flex;
+	background-color: white;
+	border-radius: 0.2rem;
+	@media (max-width: 1000px) {
+		flex-direction: column;
+		max-width: 30rem;
+	}
+`;
 
-export const ViewInfo = styled.div``;
+const Summary = styled.div``;
+
+export const ViewImage = styled.img`
+	max-width: 30rem;
+	border-bottom-left-radius: 0.2rem;
+	border-top-left-radius: 0.2rem;
+	@media (max-width: 1000px) {
+		border-top-right-radius: 0.2rem;
+	}
+`;
+
+export const ViewInfo = styled.div`
+	margin-left: 2rem;
+`;
 
 export const ViewTitle = styled.div``;

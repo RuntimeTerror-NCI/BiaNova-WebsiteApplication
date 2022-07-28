@@ -5,11 +5,13 @@ import Card from '../Card/Card';
 const RandomRecipes = () => {
 	const [random, setRandom] = useState([]);
 
+	const updateRandom = data => {
+		setRandom(JSON.parse(data));
+	};
 	const getRandomRecipes = async () => {
 		const getData = localStorage.getItem('rand');
-
 		if (getData) {
-			setRandom(JSON.parse(getData));
+			updateRandom(getData);
 		} else {
 			const options = {
 				method: 'GET',
@@ -27,11 +29,8 @@ const RandomRecipes = () => {
 				.then(response => {
 					setRandom(response.recipes);
 					localStorage.setItem('rand', JSON.stringify(response.recipes));
-					console.log(response);
 				})
 				.catch(err => console.error(err));
-
-			console.log(random);
 		}
 	};
 
@@ -42,7 +41,7 @@ const RandomRecipes = () => {
 	return (
 		<RandomRecipesStyled>
 			{random.map(({ title, id, image, summary }) => (
-				<Card key={id} title={title} img={image} content={summary}></Card>
+				<Card key={id} id={id} title={title} img={image} content={summary}></Card>
 			))}
 		</RandomRecipesStyled>
 	);

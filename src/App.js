@@ -1,7 +1,5 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { useState } from 'react';
-
 import './index.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Layout from './components/Pages/Layout';
 import HomePage from './components/Pages/HomePage';
 import Signup from './components/UserLinks/Signup';
@@ -9,20 +7,30 @@ import ForgotPassword from './components/UserLinks/ForgotPassword';
 import Login from './components/UserLinks/Login';
 import SearchPage from './components/Pages/SearchPage';
 import CardView from './components/Pages/CardView';
+import PrivateRoutes from './utils/PrivateRoutes';
+import Dashboard from './components/Pages/Dashboard';
+import useToken from './utils/useToken';
+import useUser from './utils/useUser';
 
 function App() {
-	const [token, setToken] = useState();
+	const { token, setToken } = useToken();
+	const { user, setUser } = useUser();
+
+	console.log(user);
 
 	return (
 		<Router>
 			<Routes>
-				<Route path='/' element={<Layout />}>
+				<Route path='/' element={<Layout token={token} user={user} />}>
 					<Route index element={<HomePage />} />
-					<Route path='/login' element={<Login />} />
+					<Route path='/login' element={<Login setToken={setToken} setUser={setUser} />} />
 					<Route path='/signup' element={<Signup />} />
 					<Route path='/forgot-password' element={<ForgotPassword />} />
 					<Route path='/search' element={<SearchPage />} />
 					<Route path='/recipe/:id' element={<CardView />} />
+					<Route element={<PrivateRoutes token={token} />}>
+						<Route path='dashboard' element={<Dashboard />} />
+					</Route>
 				</Route>
 			</Routes>
 		</Router>
