@@ -3,26 +3,32 @@ import styled from "styled-components";
 const TopContainer = styled.div`
   margin: auto;
   text-align: center;
-  width: 60%;
+  width: 70%;
 
   h1 {
-    margin-bottom: 1rem;
-    font-size: 2.5rem;
+    font-size: 2rem;
+    letter-spacing: 0.1rem;
   }
+
   p {
-    font-size: 1.4em;
-    line-height: 2rem;
+    width: 80%;
+    margin: auto;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    margin-top: 2rem;
+    letter-spacing: 0.1rem;
+    padding-bottom: 1rem;
   }
 `;
 
 export default function BadgeHeader() {
   return (
     <TopContainer>
-      <h1> This is where we place our badges </h1>
+      <h1> What Makes us Special </h1>
       <p>
-        We can put some quick instructions here, something to break up the page,
-        it can be out features, what we aim to do, whatever. Everything is
-        currently replaceable - new icons, new layout - ish
+        At BiaNova, we try to limit food waste as much as possible! This is why
+        we made our application intuitive and easy-to-use. Simply, Sign-Up,
+        Log-In or Click Get Started to start using BiaNova!
       </p>
     </TopContainer>
   );
