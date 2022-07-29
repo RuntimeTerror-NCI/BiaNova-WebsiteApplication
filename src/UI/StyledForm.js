@@ -121,6 +121,10 @@ export const Wrapper = styled.section`
 	border-radius: 4px;
 `;
 
+export const Frame = styled.div`
+	flex: 1 0 auto;
+`;
+
 export const StyledInput = styled.input`
 	width: 100%;
 	height: 2rem;
