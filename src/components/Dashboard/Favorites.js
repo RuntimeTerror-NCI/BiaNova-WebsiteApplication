@@ -8,8 +8,9 @@ function Favorites({ user, token }) {
 	const [recipesLiked, setRecipesLiked] = useState();
 
 	const getRecipesLiked = () => {
-		console.log('running getRecipesLiked');
-		let url = 'https://bianova.herokuapp.com/profile';
+		// console.log('running getRecipesLiked');
+		// let url = 'https://bianova.herokuapp.com/profile';
+		let url = 'http://localhost:8080/profile';
 		let data = {
 			params: {
 				username: user,
@@ -31,8 +32,18 @@ function Favorites({ user, token }) {
 				// let id = response.data['savedRecipes']['id']
 				// let title = response.data['savedRecipes']['title']
 				// let image = response.data['savedRecipes']['img']
-				setRecipesLiked(response.data['savedRecipes']);
-				console.log(...response.data['savedRecipes']);
+				//  response.data['savedRecipes'].map(
+				// 	 (val) => {console.log(val)});
+				for (let rec in response.data['savedRecipes']) {
+					console.log(rec)
+				}
+
+				let savedRecipes = response.data['savedRecipesObjects'];
+
+				console.log(response.data['savedRecipesObjects']);
+				setRecipesLiked(savedRecipes);
+				// console.log(...response.data['savedRecipes']);
+				// console.log(savedRecipes);
 			})
 			.catch(error => {
 				console.log(error);

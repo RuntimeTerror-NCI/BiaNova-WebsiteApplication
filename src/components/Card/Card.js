@@ -9,8 +9,8 @@ function Card({ img, title, id, token, user }) {
 	const [like, setLike] = useState(false);
 	const [recipe, setRecipe] = useState();
 
-	let url = 'https://bianova.herokuapp.com/save';
-	// let url = 'http://localhost:8080/save';
+	// let url = 'https://bianova.herokuapp.com/save';
+	let url = 'http://localhost:8080/save';
 
 	let headers = {
 		Authorization: `Bearer ${token}`,

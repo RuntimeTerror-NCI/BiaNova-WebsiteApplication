@@ -62,7 +62,7 @@ const CardView = () => {
     <Wrapper>
       <div>
         <Header>
-          <ViewImage alt={data.title} src={data.image} />
+          <ViewImage alt={data.title} src={data.img} />
           <ViewInfo>
             <h1>{data.title}</h1>
             {data.readyInMinutes ? (
