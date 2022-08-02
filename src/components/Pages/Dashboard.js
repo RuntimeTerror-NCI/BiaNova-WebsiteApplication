@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { PillButton } from '../../UI/Button.styles';
 import styled from 'styled-components';
 import EditProfile from '../Dashboard/EditProfile';
+import Favorites from '../Dashboard/Favorites';
 
 function Dashboard({ user, token }) {
 	const navigate = useNavigate();
@@ -20,6 +21,7 @@ function Dashboard({ user, token }) {
 			</Header>
 			<EditProfile user={user} token={token} />
 			<h2>Favourites</h2>
+			<Favorites user={user} token={token} />
 		</DashboardCon>
 	);
 }

@@ -29,7 +29,9 @@ function EditProfile({ user, token }) {
 
 	const getUser = () => {
 		axios.get('https://bianova.herokuapp.com/profile', {
-			username: user,
+			params: {
+				username: user,
+			},
 			headers: {
 				'Authorization': `Bearer ${token}`,
 			},

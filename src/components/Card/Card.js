@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useState, memo } from 'react';
+import { useState, useEffect, memo } from 'react';
 import LikePic from '../../assets/imgs/Like.png';
 import UnlikePic from '../../assets/imgs/Unlike.png';
 import axios from 'axios';
@@ -9,17 +9,22 @@ function Card({ img, title, id, token, user }) {
 	const [like, setLike] = useState(false);
 	const [recipe, setRecipe] = useState();
 
+	let url = 'https://bianova.herokuapp.com/save';
+	let data = {
+		username: user,
+	};
+
+	let headers = {
+		Authorization: `Bearer ${token}`,
+	};
+
 	const addFavorite = () => {
 		const recipe = { id: id, title: title, img: img };
 		setRecipe(recipe);
 
 		axios
-			.post('https://bianova.herokuapp.com/externalApi/save', {
-				username: user,
-				recipe: recipe,
-				headers: {
-					Authorization: `${user}${token}`,
-				},
+			.post(url, data, {
+				headers: headers,
 			})
 			.then(response => {
 				console.log(response);
@@ -45,10 +50,22 @@ function Card({ img, title, id, token, user }) {
 		}
 	};
 
+	// const getRecipesLiked = () => {
+	// 	axios
+	// 		.get('https://bianova.herokuapp.com/profile', data, {
+	// 			headers: headers,
+	// 		})
+	// 		.then(response => {
+	// 			console.log(response);
+	// 		})
+	// 		.catch(error => {
+	// 			console.log(error);
+	// 		});
+	// };
+
 	// useEffect(() => {
-	// 	addFavorite(recipe);
-	// 	removeFavorite(recipe);
-	// }, [recipe, addFavorite, removeFavorite]);
+	// 	getRecipesLiked();
+	// }, []);
 
 	return (
 		<CardContainer>
