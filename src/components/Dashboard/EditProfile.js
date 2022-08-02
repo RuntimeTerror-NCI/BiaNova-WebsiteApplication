@@ -24,19 +24,22 @@ function EditProfile({ user, token }) {
 	const [errMessage, setErrMessage] = useState('');
 
 	useEffect(() => {
-		getUser();
-	}, []);
-
-	const getUser = () => {
-		axios.get('https://bianova.herokuapp.com/profile', {
-			params: {
-				username: user,
-			},
-			headers: {
-				'Authorization': `Bearer ${token}`,
-			},
-		});
-	};
+		axios
+			.get('https://bianova.herokuapp.com/profile', {
+				params: {
+					username: user,
+				},
+				headers: {
+					'Authorization': `Bearer ${token}`,
+				},
+			})
+			.then(response => {
+				console.log(response);
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	}, [token, user]);
 
 	return (
 		<Frame>

@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import FilteredPropsInputField from './FilteredPropsInputField';
 import { Form } from 'formik';
+import { devices } from '../mediaQueries/devices';
 
 export const StyledForm = styled(Form)`
 	display: flex;
@@ -154,12 +155,17 @@ export const LandingLink = styled(Link)`
 	text-decoration: none;
 	background-color: white;
 	color: black;
-	width: 40%;
+	width: 22rem;
 	flex-direction: right;
 	transition: 0.2s all ease-in-out;
 	&:hover {
 		background-color: rgb(131, 154, 168);
 		width: 45%;
 		height: 3.5rem;
+	}
+
+	@media ${devices.laptopL} {
+		font-size: 1.3rem;
+		width: 18rem;
 	}
 `;
