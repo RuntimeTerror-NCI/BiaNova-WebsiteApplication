@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Card from "../Card/Card";
 
-const RandomRecipes = () => {
+const RandomRecipes = ({ token, user }) => {
   const [random, setRandom] = useState([]);
 
   const updateRandom = (data) => {
@@ -49,6 +49,8 @@ const RandomRecipes = () => {
           title={title}
           img={image}
           content={summary}
+          token={token}
+          user={user}
         ></Card>
       ))}
     </RandomRecipesStyled>

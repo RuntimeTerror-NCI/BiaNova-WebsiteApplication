@@ -20,14 +20,17 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Layout token={token} user={user} />}>
-          <Route index element={<HomePage />} />
+          <Route index element={<HomePage token={token} user={user} />} />
           <Route
             path="/login"
             element={<Login setToken={setToken} setUser={setUser} />}
           />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/search" element={<SearchPage />} />
+          <Route
+            path="/search"
+            element={<SearchPage token={token} user={user} />}
+          />
           <Route path="/recipe/:id" element={<CardView />} />
           <Route element={<PrivateRoutes token={token} />}>
             <Route

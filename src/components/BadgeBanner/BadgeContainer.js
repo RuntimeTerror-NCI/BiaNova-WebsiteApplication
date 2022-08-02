@@ -37,7 +37,7 @@ function BadgeContainer() {
       id: 3,
       image: search,
       heading: "Search",
-      text: "Search for any Recipe, specify by Allergens, or by any ingredient, we have it all!",
+      text: "Search for any Recipe, specify by Diets, Intolerances or Ingredients!",
     },
   ];
 

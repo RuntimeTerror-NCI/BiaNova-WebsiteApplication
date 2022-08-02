@@ -11,7 +11,6 @@ const BannerContainer = styled.div`
 
 const BottomContainer = styled.div`
   display: flex;
-  margin: 3.5rem 0 1rem;
   justify-content: center;
 `;
 

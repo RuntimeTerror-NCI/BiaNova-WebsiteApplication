@@ -45,7 +45,7 @@ const ResultsContainer = styled.div`
   flex-basis: calc(100% / 5);
 `;
 
-function SearchPage() {
+function SearchPage({ token, user }) {
   const [openFilter, setOpenFilter] = useState(false);
   const [filterIntolerances, setfilterIntolerances] = useState();
   const [filterDiet, setFilterDiet] = useState();
@@ -99,8 +99,6 @@ function SearchPage() {
       query += `&diet=${filterDiet}`;
     }
 
-    console.log(query);
-
     axios
       .get(`${query}`, {
         headers: {
@@ -126,7 +124,6 @@ function SearchPage() {
         }
       })
       .catch((error) => {
-        console.log(error);
         setErrMsg(error);
       });
   };
@@ -147,7 +144,13 @@ function SearchPage() {
       <ResultsContainer>
         {recipeResults.map(({ title, id, image }) => (
           <div key={id}>
-            <Card id={id} title={title} img={image}></Card>
+            <Card
+              id={id}
+              title={title}
+              img={image}
+              token={token}
+              user={user}
+            ></Card>
           </div>
         ))}
       </ResultsContainer>
