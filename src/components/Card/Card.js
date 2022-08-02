@@ -10,17 +10,21 @@ function Card({ img, title, id, token, user }) {
 	const [recipe, setRecipe] = useState();
 
 	let url = 'https://bianova.herokuapp.com/save';
-	let data = {
-		username: user,
-	};
+	// let url = 'http://localhost:8080/save';
 
 	let headers = {
 		Authorization: `Bearer ${token}`,
 	};
 
 	const addFavorite = () => {
+		// const recipe = { id: id, title: title, img: img };
 		const recipe = { id: id, title: title, img: img };
 		setRecipe(recipe);
+		let data = {
+			username: {'username': user},
+			'recipe': recipe
+		};
+
 
 		axios
 			.post(url, data, {

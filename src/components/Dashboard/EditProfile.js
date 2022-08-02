@@ -28,13 +28,17 @@ function EditProfile({ user, token }) {
 	}, []);
 
 	const getUser = () => {
-		axios.get('https://bianova.herokuapp.com/profile', {
+		// axios.get('https://bianova.herokuapp.com/profile', {
+		axios.get('http://localhost:8080/profile', {
 			params: {
 				username: user,
 			},
 			headers: {
 				'Authorization': `Bearer ${token}`,
 			},
+		})
+		.then(response => {
+			console.log(response.data);
 		});
 	};
 
@@ -51,7 +55,7 @@ function EditProfile({ user, token }) {
 								password: values.password,
 							})
 							.then(response => {
-								console.log(response);
+								console.log(response.data);
 							})
 							.catch(error => {
 								console.log(error);
