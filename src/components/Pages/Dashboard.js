@@ -1,53 +1,58 @@
-import { useNavigate } from 'react-router-dom';
-import { PillButton } from '../../UI/Button.styles';
-import styled from 'styled-components';
-import EditProfile from '../Dashboard/EditProfile';
-import Favorites from '../Dashboard/Favorites';
+import { useNavigate } from "react-router-dom";
+import { PillButton } from "../../UI/Button.styles";
+import styled from "styled-components";
+import Favorites from "../Dashboard/Favorites";
 
 function Dashboard({ user, token }) {
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	const logout = () => {
-		sessionStorage.clear();
-		navigate('/');
-		window.location.reload();
-	};
+  const logout = () => {
+    sessionStorage.clear();
+    navigate("/");
+    window.location.reload();
+  };
 
-	return (
-		<DashboardCon>
-			<Header>
-				<h1>Hi there, {user} </h1>
-				<PillButton onClick={() => logout()}>Logout</PillButton>
-			</Header>
-			<EditProfile user={user} token={token} />
-			<h2>Favourites</h2>
-			<Favorites user={user} token={token} />
-		</DashboardCon>
-	);
+  return (
+    <div>
+      <DashboardCon>
+        <Header>
+          <h2>Hi there, {user} </h2>
+        </Header>
+
+        <PillButton onClick={() => logout()}>Logout</PillButton>
+
+        <h2>Favourites</h2>
+        <Favorites user={user} token={token} />
+      </DashboardCon>
+    </div>
+  );
 }
 
 const DashboardCon = styled.div`
-	font-weight: 300;
-	display: flex;
-	margin: auto;
-	flex-direction: column;
-	justify-content: center;
-	flex: 1 0 auto;
+  font-weight: 300;
+  display: flex;
+  margin: auto;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1 1 auto;
+
+  h2 {
+    text-align: center;
+  }
 `;
 
 const Header = styled.div`
-	display: flex;
-	width: 100%;
+  display: flex;
+  text-align: center;
+  justify-content: center;
 
-	h1 {
-		font-family: 'Poppins', sans-serif;
-		font-size: 2rem;
-		margin-top: 3rem;
-		margin-bottom: 1.2rem;
-		letter-spacing: 0.1rem;
-		line-height: 4.5rem;
-		text-align: center;
-	}
+  h1 {
+    font-family: "Poppins", sans-serif;
+    margin-top: 3rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.1rem;
+    line-height: 4.5rem;
+  }
 `;
 
 export default Dashboard;
