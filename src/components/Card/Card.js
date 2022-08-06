@@ -4,11 +4,13 @@ import { useState, useEffect, memo } from 'react';
 import LikePic from '../../assets/imgs/Like.png';
 import UnlikePic from '../../assets/imgs/Unlike.png';
 import axios from 'axios';
+import Error from '../../UI/Error';
 
 function Card({ img, title, id, token, user }) {
 	const [like, setLike] = useState(false);
 	const [recipe, setRecipe] = useState();
 	const [favourites, setFavourites] = useState([]);
+	const [errMsg, setErrMsg] = useState('');
 
 	const updateFavourites = () => {
 		const favs = JSON.parse(localStorage.getItem('favourites'));
@@ -74,11 +76,15 @@ function Card({ img, title, id, token, user }) {
 	};
 
 	const handleLove = () => {
-		setLike(prev => !prev);
-		if (!like) {
-			addFavorite();
+		if (token) {
+			setLike(prev => !prev);
+			if (!like) {
+				addFavorite();
+			} else {
+				removeFavorite();
+			}
 		} else {
-			removeFavorite();
+			setErrMsg('Please login or signup first.');
 		}
 	};
 
@@ -122,6 +128,7 @@ function Card({ img, title, id, token, user }) {
 
 	return (
 		<CardContainer>
+			{errMsg && <Error errMsg={errMsg} />}
 			<ImageContainer>
 				<img src={img} alt={title} />
 			</ImageContainer>

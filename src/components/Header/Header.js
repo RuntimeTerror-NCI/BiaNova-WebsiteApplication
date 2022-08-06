@@ -1,31 +1,26 @@
-import styled from "styled-components";
-import { useState } from "react";
+import styled from 'styled-components';
 
-import HeaderBrand from "./HeaderBrand";
-import HeaderLinks from "./HeaderLinks";
-import BurgerMenu from "./BurgerMenu";
+import HeaderBrand from './HeaderBrand';
+import HeaderLinks from './HeaderLinks';
+import Burger from './Burger';
 
 const HeaderStyled = styled.div`
-  display: flex;
-  align-content: space-between;
-  justify-content: space-between;
-  align-items: center;
-  width: 80vw;
-  margin: 1.4rem auto;
+	display: flex;
+	align-content: space-between;
+	justify-content: space-between;
+	align-items: center;
+	width: 80vw;
+	margin: 1.4rem auto;
 `;
 
 function Header({ token, user }) {
-  const [show, setShow] = useState(false);
-
-  return (
-    <HeaderStyled>
-      <HeaderBrand />
-      <BurgerMenu show={show} onClick={() => setShow((prev) => !prev)}>
-        <HeaderLinks token={token} user={user} />{" "}
-      </BurgerMenu>
-      <HeaderLinks token={token} user={user} />
-    </HeaderStyled>
-  );
+	return (
+		<HeaderStyled>
+			<HeaderBrand />
+			<Burger user={user} token={token} />
+			<HeaderLinks user={user} token={token} />
+		</HeaderStyled>
+	);
 }
 
 export default Header;

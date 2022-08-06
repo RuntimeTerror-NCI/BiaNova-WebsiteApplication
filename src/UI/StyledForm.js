@@ -161,7 +161,6 @@ export const LandingLink = styled(Link)`
 	&:hover {
 		background-color: rgb(131, 154, 168);
 		width: 45%;
-		height: 3.5rem;
 	}
 
 	@media ${devices.laptopL} {

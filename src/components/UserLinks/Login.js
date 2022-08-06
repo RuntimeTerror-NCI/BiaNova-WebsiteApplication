@@ -58,7 +58,7 @@ function Login({ setToken, setUser }) {
 								let [user, token] = response.data.split(' ');
 								setUser(user);
 								setToken(token);
-
+								console.log(response);
 								handleRedirect();
 								window.location.reload(); //reload
 							})

@@ -17,6 +17,7 @@ function App() {
 	const { token, setToken } = useToken();
 	const { user, setUser } = useUser();
 
+	console.log(user, token);
 	return (
 		<Router>
 			<Routes>

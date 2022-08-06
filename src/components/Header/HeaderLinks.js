@@ -16,7 +16,7 @@ const LinksWrapper = styled.p`
 	font-weight: 500;
 `;
 
-function HeaderLinks({ token, user }) {
+function HeaderLinks({ user, token }) {
 	return (
 		<Links>
 			{token != null ? (
