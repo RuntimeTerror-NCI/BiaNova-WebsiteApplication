@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { StyledLink } from '../../UI/StyledForm';
+import { devices } from '../../mediaQueries/devices';
 
 const StyledLinkNav = styled(StyledLink)`
 	display: none;
 
-	@media (max-width: 768px) {
+	@media ${devices.tablet} {
 		display: block;
 	}
 `;
@@ -13,7 +14,7 @@ const StyledLinkNav = styled(StyledLink)`
 const StyledLinkRN = styled(StyledLink)`
 	display: none;
 
-	@media (max-width: 768px) {
+	@media ${devices.tablet} {
 		display: block;
 	}
 `;
@@ -28,7 +29,7 @@ const Ul = styled.ul`
 	li {
 		padding: 18px 10px;
 	}
-	@media (max-width: 768px) {
+	@media ${devices.tablet} {
 		flex-flow: column nowrap;
 		background-color: #0d2538;
 		position: fixed;

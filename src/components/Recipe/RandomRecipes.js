@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 import Card from '../Card/Card';
+import { devices } from '../../mediaQueries/devices';
 
 const RandomRecipes = ({ token, user, favourites }) => {
 	const [random, setRandom] = useState([]);
@@ -60,6 +61,11 @@ const RandomRecipesStyled = styled.div`
 	display: flex;
 	justify-content: center;
 	margin: 2rem;
+
+	@media ${devices.tablet} {
+		flex-direction: column;
+		align-items: center;
+	}
 `;
 
 export default RandomRecipes;
