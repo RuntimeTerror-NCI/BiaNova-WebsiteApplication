@@ -4,7 +4,7 @@ import Card from '../Card/Card';
 import axios from 'axios';
 
 function Favorites({ user, token }) {
-	const [data, setData] = useState();
+	const [data, setData] = useState([]);
 
 	useEffect(() => {
 		if (localStorage.getItem('favourites') !== null) {
@@ -37,9 +37,14 @@ function Favorites({ user, token }) {
 
 	return (
 		<FavContainer>
-			{data?.map(({ title, id, img }) => (
-				<div key={id}>
-					<Card id={id} title={title} img={img} token={token} user={user}></Card>
+			{data?.map(({ recipe }) => (
+				<div key={recipe.id}>
+					<Card
+						id={recipe.id}
+						title={recipe.title}
+						img={recipe.img}
+						token={token}
+						user={user}></Card>
 				</div>
 			))}
 		</FavContainer>
