@@ -35,12 +35,8 @@ function Card({ img, title, id, token, user }) {
 			.post(url, data, {
 				headers: headers,
 			})
-			.then(response => {
-				console.log(response);
-			})
-			.catch(error => {
-				console.log(error);
-			});
+			.then(response => {})
+			.catch(error => {});
 	};
 
 	const removeFavorite = () => {
@@ -67,13 +63,11 @@ function Card({ img, title, id, token, user }) {
 				headers,
 			})
 			.then(response => {
-				console.log(response);
+				console.log('removed ', response);
 			})
 			.catch(error => {
 				console.log(error);
 			});
-
-		console.log('remove ', recipe);
 	};
 
 	const handleLove = () => {

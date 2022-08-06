@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { LogOutBtn } from '../../UI/Button.styles';
 import styled from 'styled-components';
 import Favorites from '../Dashboard/Favorites';
+import { Frame } from '../../UI/StyledForm';
 
 function Dashboard({ user, token, recipesLiked, setRecipesLiked }) {
 	const navigate = useNavigate();
@@ -13,23 +14,25 @@ function Dashboard({ user, token, recipesLiked, setRecipesLiked }) {
 	};
 
 	return (
-		<div>
-			<DashboardCon>
-				<Header>
-					<h2>Hi there, {user} </h2>
-				</Header>
+		<Frame>
+			<div>
+				<DashboardCon>
+					<Header>
+						<h2>Hi there, {user} </h2>
+					</Header>
 
-				<LogOutBtn onClick={() => logout()}>Logout</LogOutBtn>
+					<LogOutBtn onClick={() => logout()}>Logout</LogOutBtn>
 
-				<h2>Your Favourites</h2>
-				<Favorites
-					user={user}
-					token={token}
-					ecipesLiked={recipesLiked}
-					setRecipesLiked={setRecipesLiked}
-				/>
-			</DashboardCon>
-		</div>
+					<h2>Your Favourites</h2>
+					<Favorites
+						user={user}
+						token={token}
+						ecipesLiked={recipesLiked}
+						setRecipesLiked={setRecipesLiked}
+					/>
+				</DashboardCon>
+			</div>
+		</Frame>
 	);
 }
 

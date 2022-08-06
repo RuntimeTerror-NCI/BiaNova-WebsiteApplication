@@ -5,7 +5,11 @@ import { devices } from '../../mediaQueries/devices';
 
 const StyledLinkNav = styled(StyledLink)`
 	display: none;
-	color: #cee4eb;
+	color: #779fd4;
+
+	&:hover {
+		color: whitesmoke;
+	}
 
 	@media ${devices.tablet} {
 		display: block;
@@ -14,6 +18,11 @@ const StyledLinkNav = styled(StyledLink)`
 
 const StyledLinkRN = styled(StyledLink)`
 	display: none;
+	color: #779fd4;
+
+	&:hover {
+		color: whitesmoke;
+	}
 
 	@media ${devices.tablet} {
 		display: block;
@@ -32,7 +41,7 @@ const Ul = styled.ul`
 	}
 	@media ${devices.tablet} {
 		flex-flow: column nowrap;
-		background-color: #0d2538;
+		background-color: #24272b;
 		position: fixed;
 		transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(100%)')};
 		top: 0;

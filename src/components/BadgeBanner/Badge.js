@@ -33,18 +33,14 @@ const Text = styled.p`
 	width: 100%;
 
 	@media ${devices.tablet} {
-		 {
-			font-size: 0.9rem;
-			letter-spacing: 2px;
-			width: 100%;
-			height: 100%;
-		}
+		font-size: 0.9rem;
+		letter-spacing: 2px;
+		width: 100%;
+		height: 100%;
 	}
 
 	@media ${devices.mobileL} {
-		 {
-			width: 100%;
-		}
+		width: 100%;
 	}
 `;
 
