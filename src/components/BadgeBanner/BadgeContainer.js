@@ -16,7 +16,7 @@ const BadgeContainerStyled = styled.div`
 	width: 90%;
 	text-align: center;
 
-	@media ${devices.mobileL} {
+	@media ${devices.tablet} {
 		flex-direction: column;
 		width: 100%;
 	}
