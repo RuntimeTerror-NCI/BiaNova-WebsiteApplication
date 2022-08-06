@@ -41,12 +41,12 @@ const Burger = ({ user, token }) => {
 
 	return (
 		<>
-			<StyledBurger open={open} onClick={() => setOpen(!open)}>
+			<StyledBurger open={open} onClick={() => setOpen(prev => !prev)}>
 				<div />
 				<div />
 				<div />
 			</StyledBurger>
-			<RightNav user={user} token={token} open={open} />
+			<RightNav user={user} token={token} setOpen={setOpen} open={open} />
 		</>
 	);
 };

@@ -5,6 +5,7 @@ import { devices } from '../../mediaQueries/devices';
 
 const StyledLinkNav = styled(StyledLink)`
 	display: none;
+	color: #cee4eb;
 
 	@media ${devices.tablet} {
 		display: block;
@@ -46,18 +47,33 @@ const Ul = styled.ul`
 	}
 `;
 
-const RightNav = ({ open, user, token }) => {
+const RightNav = ({ open, user, token, setOpen }) => {
 	return (
 		<Ul open={open}>
 			{!token ? (
 				<div>
-					<StyledLinkRN to='/login'>Log In</StyledLinkRN>
-					<StyledLinkRN to='/signup'> Sign Up</StyledLinkRN>
+					<StyledLinkRN onClick={() => setOpen(prev => !prev)} to='/login'>
+						Log In
+					</StyledLinkRN>
+					<StyledLinkRN onClick={() => setOpen(prev => !prev)} to='/signup'>
+						{' '}
+						Sign Up
+					</StyledLinkRN>
 				</div>
 			) : (
 				<div>
-					<StyledLinkNav to='/dashboard'> Dashboard </StyledLinkNav>
-					<StyledLinkNav to='/search'> Search </StyledLinkNav>
+					<StyledLinkNav onClick={() => setOpen(prev => !prev)} to='/'>
+						{' '}
+						Home{' '}
+					</StyledLinkNav>
+					<StyledLinkNav onClick={() => setOpen(prev => !prev)} to='/dashboard'>
+						{' '}
+						Dashboard{' '}
+					</StyledLinkNav>
+					<StyledLinkNav onClick={() => setOpen(prev => !prev)} to='/search'>
+						{' '}
+						Search{' '}
+					</StyledLinkNav>
 				</div>
 			)}
 		</Ul>

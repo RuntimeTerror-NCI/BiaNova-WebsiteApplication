@@ -1,63 +1,60 @@
-import { useNavigate } from "react-router-dom";
-import { PillButton } from "../../UI/Button.styles";
-import styled from "styled-components";
-import Favorites from "../Dashboard/Favorites";
+import { useNavigate } from 'react-router-dom';
+import { LogOutBtn } from '../../UI/Button.styles';
+import styled from 'styled-components';
+import Favorites from '../Dashboard/Favorites';
 
 function Dashboard({ user, token, recipesLiked, setRecipesLiked }) {
-  const navigate = useNavigate();
+	const navigate = useNavigate();
 
-  const logout = () => {
-    sessionStorage.clear();
-    navigate("/");
-    window.location.reload();
-  };
+	const logout = () => {
+		sessionStorage.clear();
+		navigate('/');
+		window.location.reload();
+	};
 
-  return (
-    <div>
-      <DashboardCon>
-        <Header>
-          <h2>Hi there, {user} </h2>
-        </Header>
+	return (
+		<div>
+			<DashboardCon>
+				<Header>
+					<h2>Hi there, {user} </h2>
+				</Header>
 
-        <PillButton onClick={() => logout()}>Logout</PillButton>
+				<LogOutBtn onClick={() => logout()}>Logout</LogOutBtn>
 
-        <h2>Favourites</h2>
-        <Favorites
-          user={user}
-          token={token}
-          ecipesLiked={recipesLiked}
-          setRecipesLiked={setRecipesLiked}
-        />
-      </DashboardCon>
-    </div>
-  );
+				<h2>Your Favourites</h2>
+				<Favorites
+					user={user}
+					token={token}
+					ecipesLiked={recipesLiked}
+					setRecipesLiked={setRecipesLiked}
+				/>
+			</DashboardCon>
+		</div>
+	);
 }
 
 const DashboardCon = styled.div`
-  font-weight: 300;
-  display: flex;
-  margin: auto;
-  flex-direction: column;
-  justify-content: center;
-  flex: 1 1 auto;
+	font-weight: 300;
+	display: flex;
+	margin: auto;
+	flex-direction: column;
+	justify-content: center;
+	flex: 1 1 auto;
+	align-items: center;
 
-  h2 {
-    text-align: center;
-  }
+	h2 {
+		font-size: 2rem;
+		margin-top: 3rem;
+		margin-bottom: 1.2rem;
+		letter-spacing: 0.1rem;
+		line-height: 1rem;
+	}
 `;
 
 const Header = styled.div`
-  display: flex;
-  text-align: center;
-  justify-content: center;
-
-  h1 {
-    font-family: "Poppins", sans-serif;
-    margin-top: 3rem;
-    margin-bottom: 1.2rem;
-    letter-spacing: 0.1rem;
-    line-height: 4.5rem;
-  }
+	display: flex;
+	text-align: center;
+	justify-content: center;
 `;
 
 export default Dashboard;
