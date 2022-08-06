@@ -1,6 +1,7 @@
 import styled from "styled-components";
-// import { useState } from 'react';
+
 import { Formik, Field, Form } from "formik";
+import { devices } from "../../mediaQueries/devices";
 
 const CheckboxGroup = styled.div`
   display: flex;
@@ -15,28 +16,61 @@ const FilterContainer = styled.div`
   height: 25rem;
   margin-top: 5rem;
   justify-content: center;
-  margin-left: -7rem;
-  justify-content: center;
+  align-items: center;
 `;
 
 const CheckboxContainer = styled.div`
   display: flex;
+
+  @media ${devices.mobileL} {
+     {
+      width: 40%;
+    }
+  }
 `;
 
 const LabelHead = styled.label`
   font-weight: 2rem;
   font-size: 1.5rem;
   padding-bottom: 6px;
+
+  @media ${devices.mobileM} {
+    font-size: 1.25rem;
+    font-weight: 1.7rem;
+    padding-bottom: 4px;
+    text-align: left;
+    line-height: 2rem;
+  }
+
+  @media ${devices.mobileS} {
+    font-size: 1.15rem;
+    font-weight: 1.6rem;
+    padding-bottom: 3px;
+    text-align: left;
+    line-height: 1.7rem;
+  }
 `;
 
 const CheckboxItem = styled.div`
   display: flex;
   height: 2rem;
   align-items: center;
+
+  @media ${devices.mobileL} {
+    width: fit-content;
+  }
 `;
+
 const CheckboxLabel = styled.label`
-  padding-left: 15px;
   width: 8rem;
+  @media ${devices.mobileM} {
+    font-size: 0.8rem;
+  }
+
+  @media ${devices.mobileS} {
+    font-size: 0.7rem;
+    font-weight: bold;
+  }
 `;
 
 const Button = styled.button`
@@ -47,11 +81,32 @@ const Checkbox = styled(Field)`
   cursor: pointer;
   width: 1.2rem;
   height: 1.2rem;
+
+  margin-right: 0.8rem;
 `;
 
-const RadioLabel = styled.label``;
+const RadioLabel = styled.label`
+  @media ${devices.mobileM} {
+    font-size: 0.8rem;
+  }
 
-const Radio = styled(Field)``;
+  @media ${devices.mobileS} {
+    font-size: 0.6rem;
+    font-weight: bold;
+  }
+`;
+
+const Radio = styled(Field)`
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-right: 0.8rem;
+`;
+
+const BtnDiv = styled.div`
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+`;
 
 function RecipeFilter({ open, filteredIntolerances, filteredDiet }) {
   if (!open) return null;
@@ -75,7 +130,6 @@ function RecipeFilter({ open, filteredIntolerances, filteredDiet }) {
       onSubmit={async (values) => {
         getIntolerances(values);
         getDiets(values);
-        alert("values added: " + JSON.stringify(values));
       }}
     >
       {({}) => {
@@ -317,8 +371,10 @@ function RecipeFilter({ open, filteredIntolerances, filteredDiet }) {
                   </div>
                 </CheckboxGroup>
               </CheckboxContainer>
-              <Button type="submit">Add</Button>
             </FilterContainer>
+            <BtnDiv>
+              <Button type="submit">Add</Button>
+            </BtnDiv>
           </Form>
         );
       }}
